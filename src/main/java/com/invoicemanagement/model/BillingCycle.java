@@ -15,29 +15,28 @@ public class BillingCycle {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="billingcycleid")
 	private int id;
-	private String type;
+	private String name;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public BillingCycle(int id, String type) {
+	public BillingCycle(int id, String name) {
 		super();
 		this.id = id;
-		this.type = type;
+		this.name = name;
 	}
 	public BillingCycle() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-		
 	
 	
 	

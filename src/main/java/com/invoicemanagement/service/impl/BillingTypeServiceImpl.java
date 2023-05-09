@@ -5,21 +5,29 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.BillingType;
+import com.invoicemanagement.repository.BillingCycleRepository;
+import com.invoicemanagement.repository.BillingTypeRepository;
 import com.invoicemanagement.service.BillingTypeService;
 
 @Service
 public class BillingTypeServiceImpl implements BillingTypeService {
 
+	private BillingTypeRepository billingTypeRepository;
+
+	public BillingTypeServiceImpl(BillingTypeRepository billingTypeRepository) {
+		super();
+		this.billingTypeRepository = billingTypeRepository;
+	}
+
+	
 	@Override
 	public BillingType create(BillingType billingType) {
-		// TODO Auto-generated method stub
-		return null;
+		return billingTypeRepository.save(billingType);
 	}
 
 	@Override
 	public List<BillingType> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return billingTypeRepository.findAll();
 	}
 
 	@Override

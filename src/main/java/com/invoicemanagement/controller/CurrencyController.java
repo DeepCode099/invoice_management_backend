@@ -11,29 +11,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.invoicemanagement.model.BillingType;
-import com.invoicemanagement.service.BillingTypeService;
+import com.invoicemanagement.model.Currency;
+import com.invoicemanagement.service.CurrencyService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/v1/billingType")
-public class BillingTypeController {
+@RequestMapping("/api/v1/currency")
+public class CurrencyController {
 
-private BillingTypeService billingTypeService;
+private CurrencyService currencyService;
 	
-	public BillingTypeController(BillingTypeService billingTypeService) {
+	public CurrencyController(CurrencyService currencyService) {
 		super();
-		this.billingTypeService = billingTypeService;
+		this.currencyService = currencyService;
 	}
 	
 	@PostMapping
-	public ResponseEntity<BillingType> create(@RequestBody BillingType bllingType){
-		return new ResponseEntity<BillingType>(billingTypeService.create(bllingType), HttpStatus.CREATED);
+	public ResponseEntity<Currency> create(@RequestBody Currency currency){
+		return new ResponseEntity<Currency>(currencyService.create(currency), HttpStatus.CREATED);
 	}
 	
 	@GetMapping
-	public List<BillingType> getAll() {
-		return billingTypeService.getAll();
+	public List<Currency> getAll() {
+		return currencyService.getAll();
 	}
-
 }
