@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.invoicemanagement.model.Address;
 import com.invoicemanagement.model.AddressType;
 import com.invoicemanagement.repository.AddressTypeRepository;
 import com.invoicemanagement.service.AddressTypeService;
@@ -25,19 +26,22 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 
 	@Override
 	public List<AddressType> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	return addressTypeRepository.findAll();
 	}
 
 	@Override
 	public AddressType update(AddressType addressType, long id) {
-		// TODO Auto-generated method stub
-		return null;
+		AddressType addresstype = addressTypeRepository.findById(id).get();
+		if(addresstype!=null) {
+			addresstype.setName(addressType.getName());
+		}
+		
+		return addressTypeRepository.save(addresstype);
 	}
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+	addressTypeRepository.deleteById(id);
 		
 	}
 

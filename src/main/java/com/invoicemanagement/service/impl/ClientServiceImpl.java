@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.invoicemanagement.model.Address;
 import com.invoicemanagement.model.AddressType;
 import com.invoicemanagement.model.Client;
+import com.invoicemanagement.model.CompanyType;
 import com.invoicemanagement.repository.AddressRepository;
 import com.invoicemanagement.repository.AddressTypeRepository;
 import com.invoicemanagement.repository.ClientRepository;
@@ -31,7 +32,9 @@ public class ClientServiceImpl implements ClientService{
 	public Client add(Map<Object, Object> client) throws ClassNotFoundException{
 		Client clientObject = new Client();
 		Address address = new Address();
+		CompanyType companyType = new CompanyType();
 		ReflectionBeanUtil.mapClassFields(client, address);
+		ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
 		addressRepository.save(address);
 		clientObject.setAddress(address);
@@ -46,7 +49,7 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public Client update(Client client, long id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
