@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService{
 		ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
 		addressRepository.save(address);
-		//clientObject.setAddress(address);
+		clientObject.setAddress(address);
 		return clientRepository.save(clientObject);
 	}
 
@@ -44,7 +44,6 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public Client update(Client client, long id) {
-		
 		return null;
 	}
 

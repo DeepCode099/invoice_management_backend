@@ -11,14 +11,17 @@ public class ReflectionBeanUtil {
 				String fieldType =field.getType().getSimpleName();
 				
 				try {
-					if (field.getName() != "id") {
+					if (field.getName() != "id" && map.get(field.getName())!=null) {
+					
 						if (fieldType.equals("long")) {
-
 							field.set(entity, Long.parseLong(map.get(field.getName()).toString()));
-						} else if (fieldType.equals("int")) {
-
-							field.set(entity, Integer.parseInt(map.get(field.getName()).toString()));
-						} else {
+							}else if (fieldType.equals("int")) {
+								field.set(entity, Integer.parseInt(map.get(field.getName()).toString()));
+							}
+							else if (fieldType.equals("float")) {
+								field.set(entity, Float.parseFloat(map.get(field.getName()).toString()));
+							}
+						 else {
 							field.set(entity, map.get(field.getName()));
 						}
 					}
