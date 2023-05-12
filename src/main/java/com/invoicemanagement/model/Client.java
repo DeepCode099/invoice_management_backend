@@ -18,9 +18,15 @@ public class Client {
 	private long id;
 	@Column(name = "clientname")
 	private String name;
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@JoinColumn(name = "addressId")
-	private Address address;
+	/*
+	 * @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
+	 * CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
+	 * 
+	 * @JoinColumn(name = "addressId")
+	 * 
+	 * @OnDelete(action = OnDeleteAction.NO_ACTION)
+	 */
+	//private Address address;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "contactId")
 	private Contact contact;
@@ -43,12 +49,10 @@ public class Client {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+	/*
+	 * public Address getAddress() { return address; } public void
+	 * setAddress(Address address) { this.address = address; }
+	 */
 	
 	public String getBussinessName() {
 		return bussinessName;
@@ -89,22 +93,9 @@ public class Client {
 		super();
 		this.id = id;
 		this.name = name;
-		this.address = address;
+	//	this.address = address;
 	}
 	
-	public Client(long id, String name, Address address, String bussinessName,
-			String primaryBussiness, long taxDocNo1, long taxDocNo2, String taxes) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.bussinessName = bussinessName;
-	
-		this.primaryBussiness = primaryBussiness;
-		this.taxDocNo1 = taxDocNo1;
-		this.taxDocNo2 = taxDocNo2;
-		this.taxes = taxes;
-	}
 	public Client() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -24,6 +24,10 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 	public List<CompanyType> getAll() {
 		return companyTypeRepository.findAll();
 	}
+	@Override
+	public CompanyType getById(long id) {
+		return companyTypeRepository.findById(id).get();
+	}
 
 	@Override
 	public CompanyType update(CompanyType companyType, long id) {

@@ -1,23 +1,19 @@
 package com.invoicemanagement.service.impl;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import com.invoicemanagement.util.ReflectionBeanUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.Address;
-import com.invoicemanagement.model.AddressType;
 import com.invoicemanagement.model.Client;
 import com.invoicemanagement.model.CompanyType;
 import com.invoicemanagement.repository.AddressRepository;
 import com.invoicemanagement.repository.AddressTypeRepository;
 import com.invoicemanagement.repository.ClientRepository;
 import com.invoicemanagement.service.ClientService;
-
-import jakarta.persistence.Entity;
+import com.invoicemanagement.util.ReflectionBeanUtil;
 
 @Service
 public class ClientServiceImpl implements ClientService{
@@ -37,14 +33,13 @@ public class ClientServiceImpl implements ClientService{
 		ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
 		addressRepository.save(address);
-		clientObject.setAddress(address);
+		//clientObject.setAddress(address);
 		return clientRepository.save(clientObject);
 	}
 
 	@Override
 	public List<Client> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return clientRepository.findAll();
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 	public List<AddressType> getAll() {
 	return addressTypeRepository.findAll();
 	}
-	
+	@Override
 	public AddressType getById(long id) {
 		return addressTypeRepository.findById(id).get();
 	}

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,8 +40,12 @@ public class CompanyTypeController {
 		public List<CompanyType> getAll() {
 			return companyTypeService.getAll();
 		}
-		@PutMapping()
-		public ResponseEntity<CompanyType> update(@RequestParam ("id") long id ,@RequestBody CompanyType companyType){
+		@GetMapping("{id}")
+		public ResponseEntity<CompanyType> getById(@PathVariable ("id") long id) {
+			return new ResponseEntity<CompanyType>(companyTypeService.getById(id),HttpStatus.OK);
+		}
+		@PutMapping("{id}")
+		public ResponseEntity<CompanyType> update(@PathVariable ("id") long id ,@RequestBody CompanyType companyType){
 			return new ResponseEntity<CompanyType>(companyTypeService.update(companyType, id), HttpStatus.OK);
 		}
 		@DeleteMapping()

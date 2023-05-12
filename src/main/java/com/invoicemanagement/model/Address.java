@@ -1,8 +1,13 @@
 
 package com.invoicemanagement.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,10 +41,16 @@ public class Address {
 	// @NotBlank(message = "Please enter website name")
 	private String website;
 
-	@OneToOne
-	@JoinColumn(name = "type_id")
+	/*
+	 * @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
+	 * CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
+	 * 
+	 * @JoinColumn(name = "type_id")
+	 * 
+	 * @OnDelete(action = OnDeleteAction.NO_ACTION)
+	 */
 	//@NotNull(message = "Please select address type")
-	private AddressType addressType;
+	//private AddressType addressType;
 
 	//@NotNull
 //	@NotBlank(message = "Please select country")
@@ -133,14 +144,12 @@ public class Address {
 		this.website = website;
 	}
 
-	public AddressType getAddressType() {
-		return addressType;
-	}
-
-	public void setAddressType(AddressType addressType) {
-		this.addressType = addressType;
-	}
-
+	/*
+	 * public AddressType getAddressType() { return addressType; }
+	 * 
+	 * public void setAddressType(AddressType addressType) { this.addressType =
+	 * addressType; }
+	 */
 	public String getCountry() {
 		return country;
 	}
@@ -163,7 +172,7 @@ public class Address {
 		this.pincode = pincode;
 		this.state = state;
 		this.website = website;
-		this.addressType = addressType;
+		//this.addressType = addressType;
 		this.country = country;
 	}
 

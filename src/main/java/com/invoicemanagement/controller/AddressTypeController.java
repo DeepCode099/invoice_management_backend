@@ -39,7 +39,7 @@ private AddressTypeService addressTypService;
 	}
 	@GetMapping("{id}")
 	public ResponseEntity<AddressType> getById(@PathVariable ("id") long id){
-		return new ResponseEntity<AddressType>(addressTypService.getById(id), HttpStatus.FOUND);
+		return new ResponseEntity<AddressType>(addressTypService.getById(id), HttpStatus.OK);
 		
 	}
 	@PutMapping("{id}")

@@ -1,6 +1,6 @@
 package com.invoicemanagement.controller;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,19 @@ import com.invoicemanagement.service.ClientService;
 public class ClientController {
 	
 	@Autowired
-	private ClientService clientService;
+	private ClientService clientService;  
 	@PostMapping
 	public ResponseEntity<Client> addClient(@RequestBody Map<Object, Object>client) throws ClassNotFoundException{
 		System.out.println("test");
 		return new ResponseEntity<Client>(clientService.add(client), HttpStatus.CREATED);
 		
 	}
+	@GetMapping
+	public List<Client>getAll(){
+		return clientService.getAll();
+	}
+	
+	
 	
 
 }
