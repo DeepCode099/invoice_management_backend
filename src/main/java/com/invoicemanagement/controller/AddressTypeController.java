@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,12 +33,17 @@ private AddressTypeService addressTypService;
 	public ResponseEntity<AddressType> createAddressType(@RequestBody AddressType addressType){
 		return new ResponseEntity<AddressType>(addressTypService.create(addressType), HttpStatus.CREATED);
 	}
-	@GetMapping()
+	@GetMapping
 	public List<AddressType> getAll() {
 		return addressTypService.getAll();
 	}
-	@PutMapping()
-	public ResponseEntity<AddressType>update(@RequestParam ("id") long id ,@RequestBody AddressType addressType){
+	@GetMapping("{id}")
+	public ResponseEntity<AddressType> getById(@PathVariable ("id") long id){
+		return new ResponseEntity<AddressType>(addressTypService.getById(id), HttpStatus.FOUND);
+		
+	}
+	@PutMapping("{id}")
+	public ResponseEntity<AddressType>update(@PathVariable ("id") long id ,@RequestBody AddressType addressType){
 		return new ResponseEntity<AddressType>(addressTypService.update(addressType, id), HttpStatus.OK);	
 	}
 	@DeleteMapping()

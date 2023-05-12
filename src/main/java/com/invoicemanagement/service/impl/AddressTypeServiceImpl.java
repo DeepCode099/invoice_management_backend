@@ -28,6 +28,10 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 	public List<AddressType> getAll() {
 	return addressTypeRepository.findAll();
 	}
+	
+	public AddressType getById(long id) {
+		return addressTypeRepository.findById(id).get();
+	}
 
 	@Override
 	public AddressType update(AddressType addressType, long id) {
@@ -35,7 +39,6 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 		if(addresstype!=null) {
 			addresstype.setName(addressType.getName());
 		}
-		
 		return addressTypeRepository.save(addresstype);
 	}
 

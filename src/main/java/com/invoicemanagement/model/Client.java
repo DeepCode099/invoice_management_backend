@@ -21,6 +21,9 @@ public class Client {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "addressId")
 	private Address address;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@JoinColumn(name = "contactId")
+	private Contact contact;
 	private String bussinessName;
 	private long companyType ; 
 	private String primaryBussiness;
