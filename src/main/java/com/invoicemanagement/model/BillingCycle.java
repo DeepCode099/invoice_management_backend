@@ -14,24 +14,25 @@ public class BillingCycle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="billingcycleid")
-	private int id;
-	private String name;
-	public int getId() {
+	private long id;
+	@Column(name ="billingcyclename")
+	private String billingCycleName;
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getBillingCycleName() {
+		return billingCycleName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setBillingCycleName(String billingCycleName) {
+		this.billingCycleName = billingCycleName;
 	}
-	public BillingCycle(int id, String name) {
+	public BillingCycle(long id, String billingCycleName) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.billingCycleName = billingCycleName;
 	}
 	public BillingCycle() {
 		super();

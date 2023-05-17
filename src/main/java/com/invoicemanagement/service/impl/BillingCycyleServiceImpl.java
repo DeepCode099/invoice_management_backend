@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.invoicemanagement.exception.ResourceNotFoundException;
 import com.invoicemanagement.model.BillingCycle;
 import com.invoicemanagement.repository.BillingCycleRepository;
 import com.invoicemanagement.service.BillingCycleService;
@@ -37,8 +38,15 @@ public class BillingCycyleServiceImpl implements BillingCycleService{
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
-		
+		// check whether a user exist or not
+		billingCycleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BillingCycle", "Id", id));
+		billingCycleRepository.deleteById(id);
+	}
+
+
+	@Override
+	public BillingCycle getById(long id) {
+		return billingCycleRepository.findById(id).get();
 	}
 
 }

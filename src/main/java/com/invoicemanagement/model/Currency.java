@@ -14,12 +14,12 @@ public class Currency {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="currencyid")
-	private int id;
+	private long id;
 	private String name;
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -28,7 +28,7 @@ public class Currency {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Currency(int id, String name) {
+	public Currency(long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

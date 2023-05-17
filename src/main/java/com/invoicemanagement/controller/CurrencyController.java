@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,4 +38,22 @@ private CurrencyService currencyService;
 	public List<Currency> getAll() {
 		return currencyService.getAll();
 	}
+	@DeleteMapping("{id}")
+	public ResponseEntity<String> deleteCurrency(@PathVariable("id") long currencyId) {
+		// delete users from DB
+		currencyService.delete(currencyId);
+		return new ResponseEntity<String>("currency deleted successfully!.", HttpStatus.OK);
+	}
+	@PutMapping("{id}")
+	public ResponseEntity<Currency> updateCurrency(@PathVariable("id") long id, @RequestBody Currency currency) {
+		return new ResponseEntity<Currency>(currencyService.update(currency, id), HttpStatus.OK);
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<Currency> getById(@PathVariable("id") long id){
+		return new ResponseEntity<Currency>(currencyService.getById(id),HttpStatus.OK);
+	}
+	
+	
+	
 }

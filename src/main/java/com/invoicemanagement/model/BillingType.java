@@ -14,30 +14,31 @@ public class BillingType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="billingtypeid")
-	private int id;
-	private String name;
-	public int getId() {
+	private long id;
+	@Column(name="billingtypename")
+	private String billingTypeName;
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getBillingTypeName() {
+		return billingTypeName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setBillingTypeName(String billingTypeName) {
+		this.billingTypeName = billingTypeName;
 	}
-	public BillingType(int id, String name) {
+	public BillingType(long id, String billingTypeName) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.billingTypeName = billingTypeName;
 	}
 	public BillingType() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	
-	
+
+
 }

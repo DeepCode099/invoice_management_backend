@@ -1,213 +1,335 @@
 package com.invoicemanagement.model;
 
 import java.util.Date;
+import java.util.List;
 
-import jakarta.persistence.Column;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name ="purchase_order")
+@Table(name = "purchase_order")
 public class PurchaseOrder {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "poNo")
-	private long poNo;
-	private String address;
-	private Date poDate;
-	private Date receivedDate;
+	private int id;
+	private float advancePaid;
+	private float balanceDue;
+
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 */	private Date createdDate;
+
+	private String currency;
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 */	
 	private Date deliveryDate;
-	private String HSN;
-	private boolean sow;
+	private Boolean enabled;
+
+	private float grandTotal;
+	private String instructions;
+	private float otherAmount;
+
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 */private Date poDate;
+
+	private String poFileUrl;
+	private String poNumber;
+
+	/*
+	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
+	 */	private Date receivedDate;
+
+	private float subTotal;
+	private float taxAmount;
+	private String termsConditions;
+
+	private Boolean sow;
+	private String title;
+	private String hsnSac;
 	private String billingAddress;
 	private String shippingAddress;
-	private String item;
-	private String description;
-	private long quality;
-	private long price;
-	private long amount;
-	private String comments;
-	private String termsAndConditions;
-	private long subTotal;
-	private long tax;
-	private long others;
-	private long grandTotal;
-	private long advancePaid;
-	private long balanceDue;
-	public long getPoNo() {
-		return poNo;
+
+	@ManyToOne
+	@JoinColumn(name = "billingCycleId")
+	private BillingCycle billingCycle;
+
+	private long clientId;
+	@ManyToOne
+	@JoinColumn(name = "billingTypeId")
+	private BillingType billingType;
+
+	/*
+	 * @OneToMany(targetEntity = ClientPurchaseOrderItem.class, cascade =
+	 * CascadeType.ALL , cascade ={CascadeType.DETACH,CascadeType.MERGE,
+	 * CascadeType.REFRESH}, fetch = FetchType.LAZY, orphanRemoval = false)
+	 * 
+	 * @JoinColumn(name = "purchaseOrderId", referencedColumnName = "Id")
+	 */
+	@OneToOne
+	@JoinColumn(name ="clientPoItemId")
+	private ClientPurchaseOrderItem clientPurchaseOrderItem;
+
+	public int getId() {
+		return id;
 	}
-	public void setPoNo(long poNo) {
-		this.poNo = poNo;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	public String getAddress() {
-		return address;
+
+	public float getAdvancePaid() {
+		return advancePaid;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+
+	public void setAdvancePaid(float advancePaid) {
+		this.advancePaid = advancePaid;
 	}
-	public Date getPoDate() {
-		return poDate;
+
+	public float getBalanceDue() {
+		return balanceDue;
 	}
-	public void setPoDate(Date poDate) {
-		this.poDate = poDate;
+
+	public void setBalanceDue(float balanceDue) {
+		this.balanceDue = balanceDue;
 	}
-	public Date getReceivedDate() {
-		return receivedDate;
+
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-	public void setReceivedDate(Date receivedDate) {
-		this.receivedDate = receivedDate;
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
 	public Date getDeliveryDate() {
 		return deliveryDate;
 	}
+
 	public void setDeliveryDate(Date deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
-	public String getHSN() {
-		return HSN;
+
+	public Boolean getEnabled() {
+		return enabled;
 	}
-	public void setHSN(String hSN) {
-		HSN = hSN;
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
-	public boolean isSow() {
+
+	public float getGrandTotal() {
+		return grandTotal;
+	}
+
+	public void setGrandTotal(float grandTotal) {
+		this.grandTotal = grandTotal;
+	}
+
+	public String getInstructions() {
+		return instructions;
+	}
+
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+
+	public float getOtherAmount() {
+		return otherAmount;
+	}
+
+	public void setOtherAmount(float otherAmount) {
+		this.otherAmount = otherAmount;
+	}
+
+	public Date getPoDate() {
+		return poDate;
+	}
+
+	public void setPoDate(Date poDate) {
+		this.poDate = poDate;
+	}
+
+	public String getPoFileUrl() {
+		return poFileUrl;
+	}
+
+	public void setPoFileUrl(String poFileUrl) {
+		this.poFileUrl = poFileUrl;
+	}
+
+	public String getPoNumber() {
+		return poNumber;
+	}
+
+	public void setPoNumber(String poNumber) {
+		this.poNumber = poNumber;
+	}
+
+	public Date getReceivedDate() {
+		return receivedDate;
+	}
+
+	public void setReceivedDate(Date receivedDate) {
+		this.receivedDate = receivedDate;
+	}
+
+	public float getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(float subTotal) {
+		this.subTotal = subTotal;
+	}
+
+	public float getTaxAmount() {
+		return taxAmount;
+	}
+
+	public void setTaxAmount(float taxAmount) {
+		this.taxAmount = taxAmount;
+	}
+
+	public String getTermsConditions() {
+		return termsConditions;
+	}
+
+	public void setTermsConditions(String termsConditions) {
+		this.termsConditions = termsConditions;
+	}
+
+	public Boolean getSow() {
 		return sow;
 	}
-	public void setSow(boolean sow) {
+
+	public void setSow(Boolean sow) {
 		this.sow = sow;
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getHsnSac() {
+		return hsnSac;
+	}
+
+	public void setHsnSac(String hsnSac) {
+		this.hsnSac = hsnSac;
+	}
+
 	public String getBillingAddress() {
 		return billingAddress;
 	}
+
 	public void setBillingAddress(String billingAddress) {
 		this.billingAddress = billingAddress;
 	}
+
 	public String getShippingAddress() {
 		return shippingAddress;
 	}
+
 	public void setShippingAddress(String shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
-	public String getItem() {
-		return item;
+
+	public BillingCycle getBillingCycle() {
+		return billingCycle;
 	}
-	public void setItem(String item) {
-		this.item = item;
+
+	public void setBillingCycle(BillingCycle billingCycle) {
+		this.billingCycle = billingCycle;
 	}
-	public String getDescription() {
-		return description;
+
+	public long getClientId() {
+		return clientId;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
 	}
-	public long getQuality() {
-		return quality;
+
+	public BillingType getBillingType() {
+		return billingType;
 	}
-	public void setQuality(long quality) {
-		this.quality = quality;
+
+	public void setBillingType(BillingType billingType) {
+		this.billingType = billingType;
 	}
-	public long getPrice() {
-		return price;
+
+	public ClientPurchaseOrderItem getClientPurchaseOrderItem() {
+		return clientPurchaseOrderItem;
 	}
-	public void setPrice(long price) {
-		this.price = price;
+
+	public void setClientPurchaseOrderItem(ClientPurchaseOrderItem clientPurchaseOrderItem) {
+		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
 	}
-	public long getAmount() {
-		return amount;
-	}
-	public void setAmount(long amount) {
-		this.amount = amount;
-	}
-	public String getComments() {
-		return comments;
-	}
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-	public String getTermsAndConditions() {
-		return termsAndConditions;
-	}
-	public void setTermsAndConditions(String termsAndConditions) {
-		this.termsAndConditions = termsAndConditions;
-	}
-	public long getSubTotal() {
-		return subTotal;
-	}
-	public void setSubTotal(long subTotal) {
-		this.subTotal = subTotal;
-	}
-	public long getTax() {
-		return tax;
-	}
-	public void setTax(long tax) {
-		this.tax = tax;
-	}
-	public long getOthers() {
-		return others;
-	}
-	public void setOthers(long others) {
-		this.others = others;
-	}
-	public long getGrandTotal() {
-		return grandTotal;
-	}
-	public void setGrandTotal(long grandTotal) {
-		this.grandTotal = grandTotal;
-	}
-	public long getAdvancePaid() {
-		return advancePaid;
-	}
-	public void setAdvancePaid(long advancePaid) {
-		this.advancePaid = advancePaid;
-	}
-	public long getBalanceDue() {
-		return balanceDue;
-	}
-	public void setBalanceDue(long balanceDue) {
-		this.balanceDue = balanceDue;
-	}
-	public PurchaseOrder(long poNo, String address, Date poDate, Date receivedDate, Date deliveryDate, String hSN,
-			boolean sow, String billingAddress, String shippingAddress, String item, String description, long quality,
-			long price, long amount, String comments, String termsAndConditions, long subTotal, long tax, long others,
-			long grandTotal, long advancePaid, long balanceDue) {
+
+	public PurchaseOrder(int id, float advancePaid, float balanceDue, Date createdDate, String currency,
+			Date deliveryDate, Boolean enabled, float grandTotal, String instructions, float otherAmount, Date poDate,
+			String poFileUrl, String poNumber, Date receivedDate, float subTotal, float taxAmount,
+			String termsConditions, Boolean sow, String title, String hsnSac, String billingAddress,
+			String shippingAddress, BillingCycle billingCycle, long clientId, BillingType billingType,
+			ClientPurchaseOrderItem clientPurchaseOrderItem) {
 		super();
-		this.poNo = poNo;
-		this.address = address;
-		this.poDate = poDate;
-		this.receivedDate = receivedDate;
+		this.id = id;
+		this.advancePaid = advancePaid;
+		this.balanceDue = balanceDue;
+		this.createdDate = createdDate;
+		this.currency = currency;
 		this.deliveryDate = deliveryDate;
-		HSN = hSN;
+		this.enabled = enabled;
+		this.grandTotal = grandTotal;
+		this.instructions = instructions;
+		this.otherAmount = otherAmount;
+		this.poDate = poDate;
+		this.poFileUrl = poFileUrl;
+		this.poNumber = poNumber;
+		this.receivedDate = receivedDate;
+		this.subTotal = subTotal;
+		this.taxAmount = taxAmount;
+		this.termsConditions = termsConditions;
 		this.sow = sow;
+		this.title = title;
+		this.hsnSac = hsnSac;
 		this.billingAddress = billingAddress;
 		this.shippingAddress = shippingAddress;
-		this.item = item;
-		this.description = description;
-		this.quality = quality;
-		this.price = price;
-		this.amount = amount;
-		this.comments = comments;
-		this.termsAndConditions = termsAndConditions;
-		this.subTotal = subTotal;
-		this.tax = tax;
-		this.others = others;
-		this.grandTotal = grandTotal;
-		this.advancePaid = advancePaid;
-		this.balanceDue = balanceDue;
+		this.billingCycle = billingCycle;
+		this.clientId = clientId;
+		this.billingType = billingType;
+		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
 	}
+
 	public PurchaseOrder() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
-	
-	
 
+	
 }
