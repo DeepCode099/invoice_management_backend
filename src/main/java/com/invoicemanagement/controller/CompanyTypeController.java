@@ -48,7 +48,7 @@ public class CompanyTypeController {
 		public ResponseEntity<CompanyType> update(@PathVariable ("id") long id ,@RequestBody CompanyType companyType){
 			return new ResponseEntity<CompanyType>(companyTypeService.update(companyType, id), HttpStatus.OK);
 		}
-		@DeleteMapping()
+		@DeleteMapping
 		public ResponseEntity<String> delete(@RequestParam ("id") long id){
 			companyTypeService.delete(id);
 			return new ResponseEntity<String>("deleted successfully!.", HttpStatus.OK);

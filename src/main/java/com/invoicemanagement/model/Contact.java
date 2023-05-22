@@ -18,7 +18,7 @@ public class Contact {
 	private String firstName;
 	private String lastName;
 	private String designation;
-	private String email;
+	//private String email;
 	private String phone;
 	private String mobile;
 	private String profileUrl;
@@ -48,12 +48,11 @@ public class Contact {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+
+	/*
+	 * public String getEmail() { return email; } public void setEmail(String email)
+	 * { this.email = email; }
+	 */
 	public String getPhone() {
 		return phone;
 	}
@@ -91,7 +90,7 @@ public class Contact {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.designation = designation;
-		this.email = email;
+		//this.email = email;
 		this.phone = phone;
 		this.mobile = mobile;
 		this.profileUrl = profileUrl;

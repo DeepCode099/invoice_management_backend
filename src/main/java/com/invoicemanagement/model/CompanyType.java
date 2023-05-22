@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,24 +18,28 @@ public class CompanyType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="companytypeid")
 	private int id;
-	private String name;
+	private String cname;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	
+	
+	public String getCname() {
+		return cname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCname(String cname) {
+		this.cname = cname;
 	}
-	public CompanyType(int id, String name) {
+	public CompanyType(int id, String cname) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.cname = cname;
 	}
+	
 	public CompanyType() {
 		super();
 		// TODO Auto-generated constructor stub

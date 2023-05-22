@@ -1,5 +1,6 @@
 package com.invoicemanagement.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +10,14 @@ import org.springframework.stereotype.Service;
 import com.invoicemanagement.model.Address;
 import com.invoicemanagement.model.Client;
 import com.invoicemanagement.model.CompanyType;
+import com.invoicemanagement.model.Contact;
+import com.invoicemanagement.model.Tax;
 import com.invoicemanagement.repository.AddressRepository;
 import com.invoicemanagement.repository.AddressTypeRepository;
 import com.invoicemanagement.repository.ClientRepository;
+import com.invoicemanagement.repository.CompanyTypeRepository;
+import com.invoicemanagement.repository.ContactRepository;
+import com.invoicemanagement.repository.TaxRepository;
 import com.invoicemanagement.service.ClientService;
 import com.invoicemanagement.util.ReflectionBeanUtil;
 
@@ -24,17 +30,43 @@ public class ClientServiceImpl implements ClientService{
 	private AddressRepository addressRepository;
 	@Autowired
 	private AddressTypeRepository addressTypeRepository;
+	@Autowired
+	private ContactRepository contactRepository;
+	@Autowired
+	private CompanyTypeRepository companyTypeRepository;
+	@Autowired
+	private TaxRepository taxRepository;
+	
 	@Override
 	public Client add(Map<Object, Object> client) throws ClassNotFoundException{
 		Client clientObject = new Client();
 		Address address = new Address();
-		CompanyType companyType = new CompanyType();
-		ReflectionBeanUtil.mapClassFields(client, address);
+		Contact contact = new Contact();
+		List<Tax> taxArrayList = new ArrayList<>();
+		List <Tax> taxList = (List<Tax>)client.get("tax");
+		Object[] objects = taxList.toArray();
+		String companyTypeId =  client.get("companyType").toString();
+		System.out.println(companyTypeId);
+		CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
+		ReflectionBeanUtil.mapClassFields(client, address);	
+		ReflectionBeanUtil.mapClassFields(client, contact);
 		ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
 		addressRepository.save(address);
+		contactRepository.save(contact);
 		clientObject.setAddress(address);
-		return clientRepository.save(clientObject);
+		clientObject.setContact(contact);
+		clientObject.setCompanytype(companyType);
+		clientObject.setTax(taxArrayList);
+		Client saveClient = clientRepository.save(clientObject);
+		for(int i=0; i<objects.length; i++) {
+			Tax tax =new Tax();
+			tax.setName(objects[i].toString());
+			tax.setClient(saveClient);
+			taxArrayList.add(tax);	
+			taxRepository.save(tax);
+		} 
+		return saveClient;
 	}
 
 	@Override
@@ -49,8 +81,7 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
-		
+		clientRepository.deleteById(id);
 	}
 	
 	/*

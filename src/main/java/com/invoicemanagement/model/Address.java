@@ -1,8 +1,7 @@
 
 package com.invoicemanagement.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import java.util.Date;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,7 +12,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "address")
@@ -21,25 +24,42 @@ public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name ="addressid")
+	@Column(name = "addressid")
 	private int id;
-	// @NotEmpty(message="Please enter address") 
+	
 	private String address1;
-	private String address2; // @NotBlank(message="Please enter city")
-	private String city; // @NotBlank(message="Please enter email ")
-	// @Email(message="enter valid email")
+	private String address2; 
+	private String city;
 	private String email;
-	private String fax; // @NotBlank(message = " Please enter Mobile no")
-	// @Pattern(regexp="(^$|[0-9]{10})" ,message = "Enter valid mobile number")
-	private String mobile; // @NotBlank(message = "Please enter phone number")
-	// @Pattern(regexp="(^$|[0-9]{10})" ,message = "Enter valid phone number")
+	private String fax;
+	private String mobile;
 	private String phone;
-
-	// @NotBlank(message = " Please enter Pincode") 
 	private String pincode;
-	private String state; 
-	// @NotBlank(message = "Please enter website name")
+	private String state;
 	private String website;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createOn;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updateOn;
+	private String createdby;
+	private String updatedBy;
+	@PrePersist
+	protected void prePersist() {
+		if (this.createOn == null)
+			createOn = new Date();
+
+	}
+
+	@PreUpdate
+	protected void preUpdate() {
+		this.updateOn = new Date();
+	}
+
+	/*
+	 * @OneToOne(fetch = FetchType.LAZY)
+	 * 
+	 * @JoinColumn(name = "addresstypeid") private AddressType addressType;
+	 */
 
 	/*
 	 * @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
@@ -49,10 +69,42 @@ public class Address {
 	 * 
 	 * @OnDelete(action = OnDeleteAction.NO_ACTION)
 	 */
-	//@NotNull(message = "Please select address type")
-	//private AddressType addressType;
+	// @NotNull(message = "Please select address type")
+	// private AddressType addressType;
 
-	//@NotNull
+	public Date getCreateOn() {
+		return createOn;
+	}
+
+	public void setCreateOn(Date createOn) {
+		this.createOn = createOn;
+	}
+
+	public Date getUpdateOn() {
+		return updateOn;
+	}
+
+	public void setUpdateOn(Date updateOn) {
+		this.updateOn = updateOn;
+	}
+
+	public String getCreatedby() {
+		return createdby;
+	}
+
+	public void setCreatedby(String createdby) {
+		this.createdby = createdby;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	// @NotNull
 //	@NotBlank(message = "Please select country")
 	private String country;
 
@@ -88,13 +140,11 @@ public class Address {
 		this.city = city;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	/*
+	 * public String getEmail() { return email; }
+	 * 
+	 * public void setEmail(String email) { this.email = email; }
+	 */
 
 	public String getFax() {
 		return fax;
@@ -150,6 +200,7 @@ public class Address {
 	 * public void setAddressType(AddressType addressType) { this.addressType =
 	 * addressType; }
 	 */
+
 	public String getCountry() {
 		return country;
 	}
@@ -165,7 +216,7 @@ public class Address {
 		this.address1 = address1;
 		this.address2 = address2;
 		this.city = city;
-		this.email = email;
+		//this.email = email;
 		this.fax = fax;
 		this.mobile = mobile;
 		this.phone = phone;
@@ -180,5 +231,5 @@ public class Address {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

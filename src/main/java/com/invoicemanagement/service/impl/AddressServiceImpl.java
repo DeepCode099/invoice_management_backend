@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.Address;
+import com.invoicemanagement.model.AddressType;
 import com.invoicemanagement.repository.AddressRepository;
 import com.invoicemanagement.service.AddressService;
 
@@ -21,20 +22,18 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public List<Address> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return addressRepository.findAll();
 	}
 
 	@Override
 	public Address update(Address address, long id) {
-		// TODO Auto-generated method stub
+	
 		return null;
 	}
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
-		
+		addressRepository.findById(id);	
 	}
 
 }

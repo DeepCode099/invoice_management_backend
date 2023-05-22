@@ -19,6 +19,9 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 	public CompanyType create(CompanyType companyType) {
 		return companyTypeRepository.save(companyType);
 	}
+	public List<CompanyType> saveAll(List<CompanyType> companyType) {
+		return companyTypeRepository.saveAll(companyType);
+	}
 
 	@Override
 	public List<CompanyType> getAll() {
@@ -33,7 +36,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 	public CompanyType update(CompanyType companyType, long id) {
 		CompanyType  companytype=companyTypeRepository.findById(id).get();
 		if (companytype!=null) {
-			companytype.setName(companyType.getName());
+			companytype.setCname(companyType.getCname());
 			}
 		return companyTypeRepository.save(companytype);
 	}

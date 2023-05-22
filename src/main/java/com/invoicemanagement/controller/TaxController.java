@@ -5,41 +5,43 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.invoicemanagement.model.Client;
-import com.invoicemanagement.service.ClientService;
-
+import com.invoicemanagement.model.Tax;
+import com.invoicemanagement.service.TaxService;
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/v1/client")
-public class ClientController {
+@RequestMapping("api/v1/tax")
+public class TaxController {
 	
 	@Autowired
-	private ClientService clientService;  
+	private TaxService taxService;
 	@PostMapping
-	public ResponseEntity<Client> addClient(@RequestBody Map<Object, Object>client) throws ClassNotFoundException{
-		System.out.println("test");
-		return new ResponseEntity<Client>(clientService.add(client), HttpStatus.CREATED);
-		
+	public ResponseEntity<Tax> create(@RequestBody Tax tax){
+		return new ResponseEntity<Tax>(taxService.create(tax),HttpStatus.CREATED);
 	}
-	@GetMapping
-	public List<Client>getAll(){
-		return clientService.getAll();
-	}
-	
 	@DeleteMapping
-	public ResponseEntity<String> delete(@RequestParam ("id") long id) {
-		 clientService.delete(id);
+	public ResponseEntity<String> delete(@RequestParam("id") long id){
 		return new ResponseEntity<String>("deleted successfully!.", HttpStatus.OK);
+	}
+	@PutMapping("{id}")
+	public ResponseEntity<Tax> update(@RequestParam("id") long id, @RequestBody Tax tax){
+		return new ResponseEntity<Tax>(taxService.update(tax, id), HttpStatus.OK);
+	}
+	@GetMapping()
+	public List<Tax> getAll(){
+		return taxService.getAll();
 	}
 	
 	

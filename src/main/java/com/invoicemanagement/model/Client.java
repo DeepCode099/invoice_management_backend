@@ -1,5 +1,10 @@
 package com.invoicemanagement.model;
 
+import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,9 +13,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
+@Table(name = "client")
 public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,19 +31,53 @@ public class Client {
 	private long id;
 	@Column(name = "clientname")
 	private String name;
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.PERSIST })
-	@JoinColumn(name = "addressId")
-	private Address address;
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@JoinColumn(name = "contactId")
-	private Contact contact;
 	private String bussinessName;
-	private long companyType;
 	private String primaryBussiness;
 	private long taxDocNo1;
 	private long taxDocNo2;
 	private String taxes;
+	// private byte enabled;
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+			CascadeType.PERSIST })
+	@JoinColumn(name = "addressId")
+	private Address address;
+	@ManyToOne()
+	private CompanyType companytype;
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+			 })
+	@JoinColumn(name = "contactId")
+	private Contact contact;
+	@JsonIgnore
+	@OneToMany(mappedBy = "client" )
+	private List<Tax> tax;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createOn;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updateOn;
+	private String createdby;
+	private String updatedBy;
+
+	
+	@PrePersist
+	protected void prePersist() {
+		if (this.createOn == null)
+			createOn = new Date();
+
+	}
+
+	@PreUpdate
+	protected void preUpdate() {
+		this.updateOn = new Date();
+	}
+	public List<Tax> getTax() {
+		return tax;
+	}
+
+	public void setTax(List<Tax> tax) {
+		this.tax = tax;
+	}
 
 	public long getId() {
 		return id;
@@ -64,12 +111,20 @@ public class Client {
 		this.bussinessName = bussinessName;
 	}
 
-	public long getCompanyType() {
-		return companyType;
+	public Contact getContact() {
+		return contact;
 	}
 
-	public void setCompanyType(long companyType) {
-		this.companyType = companyType;
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+	public CompanyType getCompanytype() {
+		return companytype;
+	}
+
+	public void setCompanytype(CompanyType companytype) {
+		this.companytype = companytype;
 	}
 
 	public String getPrimaryBussiness() {

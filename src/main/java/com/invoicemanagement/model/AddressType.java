@@ -9,29 +9,25 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "addressType")
-public class AddressType {
+public class AddressType{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="addressTypeId")
 	private long id;
-	private String name;
+	private String aname;
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	
+	public String getAname() {
+		return aname;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public AddressType(long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
+	public void setAname(String aname) {
+		this.aname = aname;
 	}
 	public AddressType() {
 		super();

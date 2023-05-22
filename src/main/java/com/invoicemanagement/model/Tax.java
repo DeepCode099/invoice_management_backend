@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +17,17 @@ public class Tax {
 	@Column(name = "taxid")
 	private long id;
 	private String name;
+	@ManyToOne()
+	private Client client;
+	
+	public Client getClient() {
+		return client;
+	}
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	
 	public long getId() {
 		return id;
 	}

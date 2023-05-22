@@ -37,7 +37,7 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 	public AddressType update(AddressType addressType, long id) {
 		AddressType addresstype = addressTypeRepository.findById(id).get();
 		if(addresstype!=null) {
-			addresstype.setName(addressType.getName());
+			addresstype.setAname(addressType.getAname());
 		}
 		return addressTypeRepository.save(addresstype);
 	}
