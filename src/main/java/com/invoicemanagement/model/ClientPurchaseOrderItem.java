@@ -21,10 +21,7 @@ public class ClientPurchaseOrderItem {
 	private String itemName;
 	private float price;
 	private int qty;
-	
-	
 	@ManyToOne()
-	@JoinColumn(name = "purchaseOrderId")
 	private PurchaseOrder purchaseOrder;
 
 

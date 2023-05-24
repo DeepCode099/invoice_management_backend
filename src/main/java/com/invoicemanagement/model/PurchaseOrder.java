@@ -72,7 +72,7 @@ public class PurchaseOrder {
 	@ManyToOne
 	@JoinColumn(name = "billingTypeId")
 	private BillingType billingType;
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "purchaseOrder")
 	@JsonIgnore
 	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
 
