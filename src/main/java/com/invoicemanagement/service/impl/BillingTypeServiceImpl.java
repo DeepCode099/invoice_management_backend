@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-
+import com.invoicemanagement.exception.ResourceNotFoundException;
+import com.invoicemanagement.model.BillingCycle;
 import com.invoicemanagement.model.BillingType;
 import com.invoicemanagement.repository.BillingCycleRepository;
 import com.invoicemanagement.repository.BillingTypeRepository;
@@ -33,8 +34,10 @@ public class BillingTypeServiceImpl implements BillingTypeService {
 
 	@Override
 	public BillingType update(BillingType billingType, long id) {
-		// TODO Auto-generated method stub
-		return null;
+		BillingType existingBillingType = billingTypeRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("BillingType", "Id", id));
+		existingBillingType.setBillingTypeName(billingType.getBillingTypeName());
+		return billingTypeRepository.save(existingBillingType);
 	}
 
 	@Override

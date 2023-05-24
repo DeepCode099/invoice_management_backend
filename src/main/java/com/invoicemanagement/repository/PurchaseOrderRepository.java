@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.invoicemanagement.model.PurchaseOrder;
 
-public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
+public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Integer> {
 
 }

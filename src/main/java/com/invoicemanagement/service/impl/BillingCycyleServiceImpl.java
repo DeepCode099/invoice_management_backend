@@ -10,7 +10,7 @@ import com.invoicemanagement.repository.BillingCycleRepository;
 import com.invoicemanagement.service.BillingCycleService;
 
 @Service
-public class BillingCycyleServiceImpl implements BillingCycleService{
+public class BillingCycyleServiceImpl implements BillingCycleService {
 
 	private BillingCycleRepository billingCycleRepository;
 
@@ -19,7 +19,6 @@ public class BillingCycyleServiceImpl implements BillingCycleService{
 		this.billingCycleRepository = billingCycleRepository;
 	}
 
-	
 	@Override
 	public BillingCycle create(BillingCycle billingCycle) {
 		return billingCycleRepository.save(billingCycle);
@@ -32,8 +31,11 @@ public class BillingCycyleServiceImpl implements BillingCycleService{
 
 	@Override
 	public BillingCycle update(BillingCycle billingCycle, long id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		BillingCycle existingBillingCycle = billingCycleRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("BillingCycle", "Id", id));
+		existingBillingCycle.setBillingCycleName(billingCycle.getBillingCycleName());
+		return billingCycleRepository.save(existingBillingCycle);
 	}
 
 	@Override
@@ -42,7 +44,6 @@ public class BillingCycyleServiceImpl implements BillingCycleService{
 		billingCycleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BillingCycle", "Id", id));
 		billingCycleRepository.deleteById(id);
 	}
-
 
 	@Override
 	public BillingCycle getById(long id) {
