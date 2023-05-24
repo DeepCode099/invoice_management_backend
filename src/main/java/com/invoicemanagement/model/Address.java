@@ -26,9 +26,8 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "addressid")
 	private int id;
-	
 	private String address1;
-	private String address2; 
+	private String address2;
 	private String city;
 	private String email;
 	private String fax;
@@ -43,6 +42,7 @@ public class Address {
 	private Date updateOn;
 	private String createdby;
 	private String updatedBy;
+
 	@PrePersist
 	protected void prePersist() {
 		if (this.createOn == null)
@@ -54,23 +54,12 @@ public class Address {
 	protected void preUpdate() {
 		this.updateOn = new Date();
 	}
-
+	
 	/*
-	 * @OneToOne(fetch = FetchType.LAZY)
+	 * @OneToOne()
 	 * 
 	 * @JoinColumn(name = "addresstypeid") private AddressType addressType;
 	 */
-
-	/*
-	 * @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
-	 * CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
-	 * 
-	 * @JoinColumn(name = "type_id")
-	 * 
-	 * @OnDelete(action = OnDeleteAction.NO_ACTION)
-	 */
-	// @NotNull(message = "Please select address type")
-	// private AddressType addressType;
 
 	public Date getCreateOn() {
 		return createOn;
@@ -108,6 +97,13 @@ public class Address {
 //	@NotBlank(message = "Please select country")
 	private String country;
 
+	/*
+	 * public AddressType getAddressType() { return addressType; }
+	 * 
+	 * public void setAddressType(AddressType addressType) { this.addressType =
+	 * addressType; }
+	 */
+
 	public int getId() {
 		return id;
 	}
@@ -140,11 +136,13 @@ public class Address {
 		this.city = city;
 	}
 
-	/*
-	 * public String getEmail() { return email; }
-	 * 
-	 * public void setEmail(String email) { this.email = email; }
-	 */
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getFax() {
 		return fax;
@@ -206,24 +204,6 @@ public class Address {
 	}
 
 	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public Address(int id, String address1, String address2, String city, String email, String fax, String mobile,
-			String phone, String pincode, String state, String website, AddressType addressType, String country) {
-		super();
-		this.id = id;
-		this.address1 = address1;
-		this.address2 = address2;
-		this.city = city;
-		//this.email = email;
-		this.fax = fax;
-		this.mobile = mobile;
-		this.phone = phone;
-		this.pincode = pincode;
-		this.state = state;
-		this.website = website;
-		//this.addressType = addressType;
 		this.country = country;
 	}
 

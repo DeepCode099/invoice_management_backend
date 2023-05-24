@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.Address;
 import com.invoicemanagement.model.Client;
+import com.invoicemanagement.model.ClientPurchaseOrderItem;
 import com.invoicemanagement.model.CompanyType;
 import com.invoicemanagement.model.Contact;
 import com.invoicemanagement.model.Tax;
@@ -38,33 +39,38 @@ public class ClientServiceImpl implements ClientService{
 	private TaxRepository taxRepository;
 	
 	@Override
-	public Client add(Map<Object, Object> client) throws ClassNotFoundException{
+	public Client add(Map<String, Object> client) throws ClassNotFoundException{
 		Client clientObject = new Client();
 		Address address = new Address();
 		Contact contact = new Contact();
-		List<Tax> taxArrayList = new ArrayList<>();
-		List <Tax> taxList = (List<Tax>)client.get("tax");
-		Object[] objects = taxList.toArray();
 		String companyTypeId =  client.get("companyType").toString();
-		System.out.println(companyTypeId);
 		CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
 		ReflectionBeanUtil.mapClassFields(client, address);	
 		ReflectionBeanUtil.mapClassFields(client, contact);
 		ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
-		addressRepository.save(address);
-		contactRepository.save(contact);
 		clientObject.setAddress(address);
 		clientObject.setContact(contact);
 		clientObject.setCompanytype(companyType);
-		clientObject.setTax(taxArrayList);
+		String enabled = client.get("enabled").toString();
+		boolean isEnabled = Boolean.parseBoolean(enabled);
+		if(isEnabled) {
+			clientObject.setEnabled(isEnabled);
+		}else {
+		clientObject.setEnabled(false);
+		}
+		List<Tax> taxArrayList = new ArrayList<>();
+		client.get("tax");
+		List<String> taxList = (List<String>)client.get("tax");
 		Client saveClient = clientRepository.save(clientObject);
-		for(int i=0; i<objects.length; i++) {
+		for(int i=0;i<taxList.size();i++) {
+		String taxName = taxList.get(i);
 			Tax tax =new Tax();
-			tax.setName(objects[i].toString());
+			tax.setName(taxName);
 			tax.setClient(saveClient);
 			taxArrayList.add(tax);	
 			taxRepository.save(tax);
+			
 		} 
 		return saveClient;
 	}
@@ -76,6 +82,10 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public Client update(Client client, long id) {
+		Client clientObj = clientRepository.findById(id).get();
+		if(clientObj!=null) {
+			
+		}
 		return null;
 	}
 
@@ -84,19 +94,4 @@ public class ClientServiceImpl implements ClientService{
 		clientRepository.deleteById(id);
 	}
 	
-	/*
-	 * public void myFunction(Map<Object, Object> map, Object entity) throws
-	 * ClassNotFoundException { for (Field field :
-	 * entity.getClass().getDeclaredFields()) { field.setAccessible(true); String
-	 * fieldType =field.getType().getSimpleName();
-	 * 
-	 * try { if (field.getName() != "id") { if(fieldType.equals("long")) {
-	 * 
-	 * field.set(entity,Long.parseLong(map.get(field.getName()).toString())); } else
-	 * if (fieldType.equals("int")) {
-	 * 
-	 * field.set(entity, Integer.parseInt(map.get(field.getName()).toString())); }
-	 * else { field.set(entity, map.get(field.getName())); } } } catch
-	 * (IllegalAccessException e) { e.printStackTrace(); } } }
-	 */
 }

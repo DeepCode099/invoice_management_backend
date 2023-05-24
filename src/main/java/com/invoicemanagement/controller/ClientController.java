@@ -26,7 +26,7 @@ public class ClientController {
 	@Autowired
 	private ClientService clientService;  
 	@PostMapping
-	public ResponseEntity<Client> addClient(@RequestBody Map<Object, Object>client) throws ClassNotFoundException{
+	public ResponseEntity<Client> addClient(@RequestBody Map<String, Object>client) throws ClassNotFoundException{
 		System.out.println("test");
 		return new ResponseEntity<Client>(clientService.add(client), HttpStatus.CREATED);
 		

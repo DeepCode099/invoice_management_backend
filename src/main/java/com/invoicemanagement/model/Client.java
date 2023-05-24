@@ -36,20 +36,60 @@ public class Client {
 	private long taxDocNo1;
 	private long taxDocNo2;
 	private String taxes;
-	// private byte enabled;
+	private boolean enabled;
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
 			CascadeType.PERSIST })
 	@JoinColumn(name = "addressId")
 	private Address address;
 	@ManyToOne()
 	private CompanyType companytype;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
-			 })
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Date getCreateOn() {
+		return createOn;
+	}
+
+	public void setCreateOn(Date createOn) {
+		this.createOn = createOn;
+	}
+
+	public Date getUpdateOn() {
+		return updateOn;
+	}
+
+	public void setUpdateOn(Date updateOn) {
+		this.updateOn = updateOn;
+	}
+
+	public String getCreatedby() {
+		return createdby;
+	}
+
+	public void setCreatedby(String createdby) {
+		this.createdby = createdby;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "contactId")
 	private Contact contact;
 	@JsonIgnore
-	@OneToMany(mappedBy = "client" )
+	@OneToMany(mappedBy = "client")
 	private List<Tax> tax;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -114,6 +154,7 @@ public class Client {
 	public Contact getContact() {
 		return contact;
 	}
+
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
