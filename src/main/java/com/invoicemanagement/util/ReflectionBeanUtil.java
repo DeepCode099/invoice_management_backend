@@ -1,136 +1,74 @@
 package com.invoicemanagement.util;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class ReflectionBeanUtil {
 
-public static void mapClassFields(Map<Object, Object> map, Object entity) {
-		
+	public static void mapClassFields(Map<String, Object> map, Object entity) {
+
 		for (Field field : entity.getClass().getDeclaredFields()) {
 			field.setAccessible(true);
 			String fieldType = field.getType().getSimpleName();
 			try {
-
 				if (field.getName() != "id" && map.get(field.getName()) != null) {
-
+					String a = "";
 					if (fieldType.equals("long")) {
-
-						String a = "";
+						System.out.println("long"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
 						if (map.get(field.getName()).toString() != "") {
 							a = map.get(field.getName()).toString();
 						} else {
 							a = "0";
 						}
 						field.set(entity, Long.parseLong(a));
-
 					} else if (fieldType.equals("int")) {
-
-						field.set(entity, Integer.parseInt(map.get(field.getName()).toString()));
-
+						System.out.println("int"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
+						
+						if (map.get(field.getName()).toString() != "") {
+							a = map.get(field.getName()).toString();
+						} else {
+							a = "0";
+						}
+						field.set(entity, Integer.parseInt(a));
 					} else if (fieldType.equals("float")) {
-
-						field.set(entity, Float.parseFloat(map.get(field.getName()).toString()));
-
+						System.out.println("float"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
+						if (map.get(field.getName()).toString() != "") {
+							a = map.get(field.getName()).toString();
+						} else {
+							a = "0.0";
+						}
+						System.out.println(field.getName());
+						field.set(entity, Float.parseFloat(a));
+					} else if (fieldType.equals("Date")) {
+						System.out.println("date"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
+						String dateString = map.get(field.getName()).toString();
+						if (dateString.isEmpty()) {
+							field.set(entity, null);
+						} else {
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							Date date = dateFormat.parse(dateString);
+							field.set(entity, date);
+						}
+					} else if (fieldType.equals("boolean")) {
+						field.set(entity, Boolean.parseBoolean(map.get(field.getName()).toString()));
 					}
-
-					/*
-					 * else if (fieldType.equals("List")) { System.out.println(field.getName()); //
-					 * System.out.println(map.get(field.getName()));
-					 * System.out.println(field.getClass()); Object o = (Object)
-					 * map.get(field.getName()); List<Object> listValue = (List<Object>)o; // Field
-					 * stringListField = testClass.getDeclaredField("stringList") ParameterizedType
-					 * stringListType = (ParameterizedType) field.getGenericType(); Class<?>
-					 * stringListClass = (Class<?>) stringListType.getActualTypeArguments()[0];
-					 * System.out.println("++++++++++"+stringListClass.getCanonicalName()); Object
-					 * listEntity=null; try { listEntity =
-					 * (Object)Class.forName(stringListClass.getCanonicalName()).newInstance(); }
-					 * catch (InstantiationException e) { // TODO Auto-generated catch block
-					 * e.printStackTrace(); } catch (ClassNotFoundException e) { // TODO
-					 * Auto-generated catch block e.printStackTrace(); } List<?> entityList = new
-					 * ArrayList<>(); for(Field fi: listEntity.getClass().getDeclaredFields()) {
-					 * if(field.getName() != "id" && field.getName()!="client") {
-					 * fi.set(stringListClass, map.get(fi.getName()));
-					 * System.out.println("fgfgfgfgfgfgfgfg"+fi); }
-					 * 
-					 * } }
-					 */
-
 					else {
-						System.out.println(field.getType()+"---"+field.getName());
+						if (field.getName() != "id") {
+						System.out.println(field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
 						field.set(entity, map.get(field.getName()));
 					}
-
+					}
 				}
 			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
 	}
-
-	/*
-	 * public static void mapClassFields(Map<Object, Object> map, Object entity) {
-	 * 
-	 * for (Field field : entity.getClass().getDeclaredFields()) {
-	 * field.setAccessible(true); String fieldType =
-	 * field.getType().getSimpleName(); try {
-	 * 
-	 * if (field.getName() != "id" && map.get(field.getName()) != null) {
-	 * 
-	 * if (fieldType.equals("long")) {
-	 * 
-	 * String a = ""; if (map.get(field.getName()).toString() != "") { a =
-	 * map.get(field.getName()).toString(); } else { a = "0"; } field.set(entity,
-	 * Long.parseLong(a));
-	 * 
-	 * } else if (fieldType.equals("int")) {
-	 * 
-	 * field.set(entity, Integer.parseInt(map.get(field.getName()).toString()));
-	 * 
-	 * } else if (fieldType.equals("float")) {
-	 * 
-	 * field.set(entity, Float.parseFloat(map.get(field.getName()).toString()));
-	 * 
-	 * }
-	 * 
-	 * else if (fieldType.equals("String")){
-	 * 
-	 * field.set(entity, map.get(field.getName())); } else {
-	 * System.out.println(field.getName()); entity= field.getName();
-	 * field.setAccessible(true); String fieldType1 =
-	 * field.getType().getSimpleName(); for (Field field1 :
-	 * entity.getClass().getDeclaredFields()) { try {
-	 * 
-	 * if (field1.getName() != "id" && map.get(field1.getName()) != null) {
-	 * 
-	 * if (fieldType1.equals("long")) {
-	 * 
-	 * String a = ""; if (map.get(field1.getName()).toString() != "") { a =
-	 * map.get(field1.getName()).toString(); } else { a = "0"; } field1.set(entity,
-	 * Long.parseLong(a));
-	 * 
-	 * } else if (fieldType1.equals("int")) {
-	 * 
-	 * field1.set(entity, Integer.parseInt(map.get(field1.getName()).toString()));
-	 * 
-	 * } else if (fieldType1.equals("float")) {
-	 * 
-	 * field1.set(entity, Float.parseFloat(map.get(field1.getName()).toString()));
-	 * 
-	 * }
-	 * 
-	 * else if (fieldType1.equals("String")){ field1.set(entity,
-	 * map.get(field1.getName())); } else { entity= field1.getName();
-	 * 
-	 * field1.set(entity, map.get(field1.getName())); }
-	 * 
-	 * } } catch (IllegalAccessException e) { e.printStackTrace(); }
-	 * 
-	 * } //field.set(entity, map.get(field.getName())); }
-	 * 
-	 * } } catch (IllegalAccessException e) { e.printStackTrace(); } }
-	 * 
-	 * }
-	 */
 }

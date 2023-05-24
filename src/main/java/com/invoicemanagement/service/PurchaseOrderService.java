@@ -6,8 +6,9 @@ import java.util.Map;
 import com.invoicemanagement.model.PurchaseOrder;
 
 public interface PurchaseOrderService {
-	
-	public PurchaseOrder createPurchaseOrder(Map<Object, Object> purchaseOrder )throws ClassNotFoundException;
-	
+
+    public PurchaseOrder createPurchaseOrder(Map<String, Object> purchaseOrder) throws ClassNotFoundException;
+
 	public List<PurchaseOrder> getAll();
+
 }

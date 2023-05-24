@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,38 +29,35 @@ public class PurchaseOrder {
 	private int id;
 	private float advancePaid;
 	private float balanceDue;
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date createdDate;
+	private long currencyId;
 	/*
 	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 */	private Date createdDate;
-
-	private String currency;
-	/*
-	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 */	
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date deliveryDate;
-	private Boolean enabled;
-
+	private boolean enabled;
 	private float grandTotal;
 	private String instructions;
 	private float otherAmount;
-
 	/*
 	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 */private Date poDate;
-
+	 * 
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date poDate;
 	private String poFileUrl;
 	private String poNumber;
-
 	/*
 	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 */	private Date receivedDate;
-
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date receivedDate;
 	private float subTotal;
 	private float taxAmount;
 	private String termsConditions;
-
-	private Boolean sow;
+	 private boolean sow;
 	private String title;
 	private String hsnSac;
 	private String billingAddress;
@@ -66,22 +66,15 @@ public class PurchaseOrder {
 	@ManyToOne
 	@JoinColumn(name = "billingCycleId")
 	private BillingCycle billingCycle;
-
-	private long clientId;
+	@ManyToOne
+	@JoinColumn(name = "clientId")
+	private Client client;
 	@ManyToOne
 	@JoinColumn(name = "billingTypeId")
 	private BillingType billingType;
-
-	/*
-	 * @OneToMany(targetEntity = ClientPurchaseOrderItem.class, cascade =
-	 * CascadeType.ALL , cascade ={CascadeType.DETACH,CascadeType.MERGE,
-	 * CascadeType.REFRESH}, fetch = FetchType.LAZY, orphanRemoval = false)
-	 * 
-	 * @JoinColumn(name = "purchaseOrderId", referencedColumnName = "Id")
-	 */
-	@OneToOne
-	@JoinColumn(name ="clientPoItemId")
-	private ClientPurchaseOrderItem clientPurchaseOrderItem;
+	@OneToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
 
 	public int getId() {
 		return id;
@@ -115,12 +108,12 @@ public class PurchaseOrder {
 		this.createdDate = createdDate;
 	}
 
-	public String getCurrency() {
-		return currency;
+	public long getCurrencyId() {
+		return currencyId;
 	}
 
-	public void setCurrency(String currency) {
-		this.currency = currency;
+	public void setCurrencyId(long currencyId) {
+		this.currencyId = currencyId;
 	}
 
 	public Date getDeliveryDate() {
@@ -131,11 +124,11 @@ public class PurchaseOrder {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public Boolean getEnabled() {
+	public boolean isEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(Boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -219,11 +212,11 @@ public class PurchaseOrder {
 		this.termsConditions = termsConditions;
 	}
 
-	public Boolean getSow() {
+	public boolean isSow() {
 		return sow;
 	}
 
-	public void setSow(Boolean sow) {
+	public void setSow(boolean sow) {
 		this.sow = sow;
 	}
 
@@ -267,12 +260,12 @@ public class PurchaseOrder {
 		this.billingCycle = billingCycle;
 	}
 
-	public long getClientId() {
-		return clientId;
+	public Client getClientId() {
+		return client;
 	}
 
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
+	public void setClientId(Client client) {
+		this.client = client;
 	}
 
 	public BillingType getBillingType() {
@@ -283,46 +276,11 @@ public class PurchaseOrder {
 		this.billingType = billingType;
 	}
 
-	public ClientPurchaseOrderItem getClientPurchaseOrderItem() {
+	public List<ClientPurchaseOrderItem> getClientPurchaseOrderItem() {
 		return clientPurchaseOrderItem;
 	}
 
-	public void setClientPurchaseOrderItem(ClientPurchaseOrderItem clientPurchaseOrderItem) {
-		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
-	}
-
-	public PurchaseOrder(int id, float advancePaid, float balanceDue, Date createdDate, String currency,
-			Date deliveryDate, Boolean enabled, float grandTotal, String instructions, float otherAmount, Date poDate,
-			String poFileUrl, String poNumber, Date receivedDate, float subTotal, float taxAmount,
-			String termsConditions, Boolean sow, String title, String hsnSac, String billingAddress,
-			String shippingAddress, BillingCycle billingCycle, long clientId, BillingType billingType,
-			ClientPurchaseOrderItem clientPurchaseOrderItem) {
-		super();
-		this.id = id;
-		this.advancePaid = advancePaid;
-		this.balanceDue = balanceDue;
-		this.createdDate = createdDate;
-		this.currency = currency;
-		this.deliveryDate = deliveryDate;
-		this.enabled = enabled;
-		this.grandTotal = grandTotal;
-		this.instructions = instructions;
-		this.otherAmount = otherAmount;
-		this.poDate = poDate;
-		this.poFileUrl = poFileUrl;
-		this.poNumber = poNumber;
-		this.receivedDate = receivedDate;
-		this.subTotal = subTotal;
-		this.taxAmount = taxAmount;
-		this.termsConditions = termsConditions;
-		this.sow = sow;
-		this.title = title;
-		this.hsnSac = hsnSac;
-		this.billingAddress = billingAddress;
-		this.shippingAddress = shippingAddress;
-		this.billingCycle = billingCycle;
-		this.clientId = clientId;
-		this.billingType = billingType;
+	public void setClientPurchaseOrderItem(List<ClientPurchaseOrderItem> clientPurchaseOrderItem) {
 		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
 	}
 
@@ -331,5 +289,4 @@ public class PurchaseOrder {
 		// TODO Auto-generated constructor stub
 	}
 
-	
 }
