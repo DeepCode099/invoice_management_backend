@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,63 +26,74 @@ public class InvoiceItem {
 	private double part;
 	@Column(name = "qty")
 	private int quantity;
+
 	@ManyToOne
-	@JoinColumn(name = "poItemId")
-	private ClientPurchaseOrderItem clientPurchaseOrderItem;
+	@JoinColumn(name ="invoiceId")
+	private Invoice invoice;
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public double getAmount() {
 		return amount;
 	}
+
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
+
 	public String getDescrition() {
 		return descrition;
 	}
+
 	public void setDescrition(String descrition) {
 		this.descrition = descrition;
 	}
+
 	public double getPart() {
 		return part;
 	}
+
 	public void setPart(double part) {
 		this.part = part;
 	}
+
 	public int getQuantity() {
 		return quantity;
 	}
+
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public ClientPurchaseOrderItem getClientPurchaseOrderItem() {
-		return clientPurchaseOrderItem;
+
+	public Invoice getInvoice() {
+		return invoice;
 	}
-	public void setClientPurchaseOrderItem(ClientPurchaseOrderItem clientPurchaseOrderItem) {
-		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 	}
-	public InvoiceItem(int id, double amount, String descrition, double part, int quantity,
-			ClientPurchaseOrderItem clientPurchaseOrderItem) {
+
+	public InvoiceItem(int id, double amount, String descrition, double part, int quantity, Invoice invoice) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.descrition = descrition;
 		this.part = part;
 		this.quantity = quantity;
-		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
+		this.invoice = invoice;
 	}
+
 	public InvoiceItem() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	
-	
-	
-	
+		
 	
 }

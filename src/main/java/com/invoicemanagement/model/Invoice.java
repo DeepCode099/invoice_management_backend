@@ -4,11 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +22,7 @@ public class Invoice {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "invoice_id")
 	private int id;
 
 	@Column(name = "termsConditions")
@@ -57,14 +56,13 @@ public class Invoice {
 	@Column(name = "advancePaid")
 	private double advancePaid;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
-	@JoinColumn(name = "invoiceId")
+	@OneToMany(mappedBy = "invoice")
+	@JsonIgnore
 	private List<InvoiceItem> invoiceItems;
 	
-	//@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
-	@ManyToOne
-	@JoinColumn(name = "clientId")
-	private Client client;
+	@Column(name ="clientId")
+	private long clientId;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "purchaseOrderId")
@@ -166,15 +164,16 @@ public class Invoice {
 		this.invoiceItems = invoiceItems;
 	}
 
-	public Client getClient() {
-		return client;
+	public long getClientId() {
+		return clientId;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
 	}
 
-	public PurchaseOrder getPurchaseOrder() {
+	
+		public PurchaseOrder getPurchaseOrder() {
 		return purchaseOrder;
 	}
 
@@ -182,35 +181,11 @@ public class Invoice {
 		this.purchaseOrder = purchaseOrder;
 	}
 
-	public Invoice(int id, String termsConditions, double subTotal, String invoiceNo, Date invoiceDate,
-			double grandTotal, Date dueDate, String currency, Date createdDate, double balanceDue, double advancePaid,
-			List<InvoiceItem> invoiceItems, Client client, PurchaseOrder purchaseOrder) {
-		super();
-		this.id = id;
-		this.termsConditions = termsConditions;
-		this.subTotal = subTotal;
-		this.invoiceNo = invoiceNo;
-		this.invoiceDate = invoiceDate;
-		this.grandTotal = grandTotal;
-		this.dueDate = dueDate;
-		this.currency = currency;
-		this.createdDate = createdDate;
-		this.balanceDue = balanceDue;
-		this.advancePaid = advancePaid;
-		this.invoiceItems = invoiceItems;
-		this.client = client;
-		this.purchaseOrder = purchaseOrder;
-	}
-
-	public Invoice() {
+		public Invoice() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
-	
-	
-	
-	
+
+
 }

@@ -17,7 +17,8 @@ public class ReflectionBeanUtil {
 				if (field.getName() != "id" && map.get(field.getName()) != null) {
 					String a = "";
 					if (fieldType.equals("long")) {
-						System.out.println("long"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
+						System.out.println(
+								"long" + field.getType() + "---" + field.getName() + "--" + map.get(field.getName()));
 						if (map.get(field.getName()).toString() != "") {
 							a = map.get(field.getName()).toString();
 						} else {
@@ -25,8 +26,9 @@ public class ReflectionBeanUtil {
 						}
 						field.set(entity, Long.parseLong(a));
 					} else if (fieldType.equals("int")) {
-						System.out.println("int"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
-						
+						System.out.println(
+								"int" + field.getType() + "---" + field.getName() + "--" + map.get(field.getName()));
+
 						if (map.get(field.getName()).toString() != "") {
 							a = map.get(field.getName()).toString();
 						} else {
@@ -34,7 +36,8 @@ public class ReflectionBeanUtil {
 						}
 						field.set(entity, Integer.parseInt(a));
 					} else if (fieldType.equals("float")) {
-						System.out.println("float"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
+						System.out.println(
+								"float" + field.getType() + "---" + field.getName() + "--" + map.get(field.getName()));
 						if (map.get(field.getName()).toString() != "") {
 							a = map.get(field.getName()).toString();
 						} else {
@@ -43,7 +46,8 @@ public class ReflectionBeanUtil {
 						System.out.println(field.getName());
 						field.set(entity, Float.parseFloat(a));
 					} else if (fieldType.equals("Date")) {
-						System.out.println("date"+field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
+						System.out.println(
+								"date" + field.getType() + "---" + field.getName() + "--" + map.get(field.getName()));
 						String dateString = map.get(field.getName()).toString();
 						if (dateString.isEmpty()) {
 							field.set(entity, null);
@@ -54,12 +58,20 @@ public class ReflectionBeanUtil {
 						}
 					} else if (fieldType.equals("boolean")) {
 						field.set(entity, Boolean.parseBoolean(map.get(field.getName()).toString()));
-					}
-					else {
+					} else if (fieldType.equals("double")) {
+						System.out.println("double ->"+field.getType()+"---"+field.getName() + "----"+map.get(field.getName()));
+						if (map.get(field.getName()).toString() != "") {
+							a = map.get(field.getName()).toString();
+						} else {
+							a = "0";
+						}
+						field.set(entity, Double.parseDouble(a));
+					} else {
 						if (field.getName() != "id") {
-						System.out.println(field.getType() + "---" + field.getName() +"--" +map.get(field.getName()));
-						field.set(entity, map.get(field.getName()));
-					}
+							System.out.println(
+									field.getType() + "---" + field.getName() + "--" + map.get(field.getName()));
+							field.set(entity, map.get(field.getName()));
+						}
 					}
 				}
 			} catch (IllegalAccessException e) {

@@ -28,10 +28,10 @@ public class ReceivePaymentController {
     private ReceivePaymentService receivePaymentService;
 	
 	@PostMapping
-	public ResponseEntity<ReceivePayment> createReceivePayment(@RequestBody Map<Object, Object> receivePayment)
+	public ResponseEntity<ReceivePayment> createReceivePayment(@RequestBody Map<String, Object> receivePayment)
 			throws ClassNotFoundException {
 		System.out.println("Object -->"+receivePayment);
-		return new ResponseEntity<ReceivePayment>(receivePaymentService.add(receivePayment),
+		return new ResponseEntity<ReceivePayment>(receivePaymentService.create(receivePayment),
 				HttpStatus.CREATED);
 	} 
 	

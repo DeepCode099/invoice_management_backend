@@ -3,21 +3,16 @@ package com.invoicemanagement.model;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -66,15 +61,26 @@ public class PurchaseOrder {
 	@ManyToOne
 	@JoinColumn(name = "billingCycleId")
 	private BillingCycle billingCycle;
-	@ManyToOne
-	@JoinColumn(name = "clientId")
-	private Client client;
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "clientId")
+	 */private long clientId;
 	@ManyToOne
 	@JoinColumn(name = "billingTypeId")
 	private BillingType billingType;
 	@OneToMany(mappedBy = "purchaseOrder")
 	@JsonIgnore
 	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
+
+	
+	public long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
+	}
 
 	public int getId() {
 		return id;
@@ -260,13 +266,7 @@ public class PurchaseOrder {
 		this.billingCycle = billingCycle;
 	}
 
-	public Client getClientId() {
-		return client;
-	}
-
-	public void setClientId(Client client) {
-		this.client = client;
-	}
+	
 
 	public BillingType getBillingType() {
 		return billingType;

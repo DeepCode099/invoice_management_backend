@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.invoicemanagement.exception.ResourceNotFoundException;
 import com.invoicemanagement.model.BillingCycle;
 import com.invoicemanagement.model.BillingType;
 import com.invoicemanagement.model.Client;
@@ -39,7 +40,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	@Autowired
 	private ClientPurchaseOrderItemRepository clientPurchaseOrderItemRepository;
 
-	
 	@Override
 	public PurchaseOrder createPurchaseOrder(Map<String, Object> purchaseOrder) throws ClassNotFoundException {
 		PurchaseOrder purchaseOrderObject = new PurchaseOrder();
@@ -60,12 +60,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 			purchaseOrderObject.setSow(false);
 		}
 		System.out.println(purchaseOrder.get("clientPurchaseOrderItem"));
-		List<ClientPurchaseOrderItem>clientpol= new ArrayList<>();
-		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>)purchaseOrder.get("clientPurchaseOrderItem");
+		List<ClientPurchaseOrderItem> clientpol = new ArrayList<>();
+		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder
+				.get("clientPurchaseOrderItem");
 		System.out.println(clientPurchaseOrderItemList.size());
 		PurchaseOrder savePO = purchaseOrderRepository.save(purchaseOrderObject);
-		for(int i=0;i<clientPurchaseOrderItemList.size();i++) {
-			Map<String, String> items=clientPurchaseOrderItemList.get(i);
+		for (int i = 0; i < clientPurchaseOrderItemList.size(); i++) {
+			Map<String, String> items = clientPurchaseOrderItemList.get(i);
 			ClientPurchaseOrderItem clientPurchaseOrderItem = new ClientPurchaseOrderItem();
 			clientPurchaseOrderItem.setItemName(items.get("itemName"));
 			clientPurchaseOrderItem.setItemDescription((items.get("itemDescription")));
@@ -75,15 +76,26 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 			clientPurchaseOrderItem.setPurchaseOrder(savePO);
 			clientpol.add(clientPurchaseOrderItem);
 			clientPurchaseOrderItemRepository.save(clientPurchaseOrderItem);
-			
 		}
 		purchaseOrderObject.setClientPurchaseOrderItem(clientpol);
 		return savePO;
-
 	}
 
 	@Override
 	public List<PurchaseOrder> getAll() {
 		return purchaseOrderRepository.findAll();
+	}
+
+	@Override
+	public void delete(int id) {
+		// check whether a user exist or not
+		purchaseOrderRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder", "Id", id));
+		purchaseOrderRepository.deleteById(id);
+	}
+
+	@Override
+	public PurchaseOrder getById(int id) {
+		return purchaseOrderRepository.findById(id).get();
 	}
 }

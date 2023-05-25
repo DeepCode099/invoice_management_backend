@@ -7,7 +7,7 @@ import com.invoicemanagement.model.ReceivePayment;
 
 public interface ReceivePaymentService {
 	
-	public ReceivePayment add(Map<Object, Object> receivePayment)throws ClassNotFoundException;
+	public ReceivePayment create(Map<String, Object> receivePayment)throws ClassNotFoundException;
 	public List<ReceivePayment> getAll();
 	
 
