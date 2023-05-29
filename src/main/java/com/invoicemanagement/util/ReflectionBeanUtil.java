@@ -66,7 +66,7 @@ public class ReflectionBeanUtil {
 							a = "0";
 						}
 						field.set(entity, Double.parseDouble(a));
-					} else {
+					} else if (fieldType.equals("String")){
 						if (field.getName() != "id") {
 							System.out.println(
 									field.getType() + "---" + field.getName() + "--" + map.get(field.getName()));

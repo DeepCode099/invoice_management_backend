@@ -24,7 +24,9 @@ public class ReceivePayment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private long clientId;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Client client;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "invoiceId")
@@ -61,12 +63,14 @@ public class ReceivePayment {
 		this.id = id;
 	}
 
-	public long getClientId() {
-		return clientId;
+	
+
+	public Client getClient() {
+		return client;
 	}
 
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public Invoice getInvoice() {
@@ -133,31 +137,10 @@ public class ReceivePayment {
 		this.transactionDetails = transactionDetails;
 	}
 
-	public ReceivePayment(int id, long clientId, Invoice invoice, long payableTotal, long balanceDue,
-			long amountReceived, PaymentMode paymentMode, String amountPaid, Date dateOfPayment,
-			String transactionDetails) {
-		super();
-		this.id = id;
-		this.clientId = clientId;
-		this.invoice = invoice;
-		this.payableTotal = payableTotal;
-		this.balanceDue = balanceDue;
-		this.amountReceived = amountReceived;
-		this.paymentMode = paymentMode;
-		this.amountPaid = amountPaid;
-		this.dateOfPayment = dateOfPayment;
-		this.transactionDetails = transactionDetails;
-	}
-
 	public ReceivePayment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	
-	
-	
-
 
 }
 

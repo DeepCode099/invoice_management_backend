@@ -61,11 +61,7 @@ public class PurchaseOrder {
 	@ManyToOne
 	@JoinColumn(name = "billingCycleId")
 	private BillingCycle billingCycle;
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "clientId")
-	 */private long clientId;
+
 	@ManyToOne
 	@JoinColumn(name = "billingTypeId")
 	private BillingType billingType;
@@ -74,13 +70,6 @@ public class PurchaseOrder {
 	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
 
 	
-	public long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
-	}
 
 	public int getId() {
 		return id;
