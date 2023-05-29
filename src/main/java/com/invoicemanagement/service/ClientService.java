@@ -8,8 +8,9 @@ import com.invoicemanagement.model.Client;
 public interface ClientService {
 	public Client add(Map<String, Object> client)throws ClassNotFoundException;
 	public List<Client> getAll();
-	public Client update(Client client, long id);
+	public Client getById (long id);
+	public Client update(Map<String, Object>client,long id);
+	public List<Client> getByEnabled ();
 	public void delete(long id); 
 
-	public Client getById(long id);
 }

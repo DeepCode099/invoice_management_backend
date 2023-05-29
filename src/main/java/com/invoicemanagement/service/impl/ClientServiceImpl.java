@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.Address;
 import com.invoicemanagement.model.Client;
-import com.invoicemanagement.model.ClientPurchaseOrderItem;
 import com.invoicemanagement.model.CompanyType;
 import com.invoicemanagement.model.Contact;
 import com.invoicemanagement.model.Tax;
@@ -43,24 +42,26 @@ public class ClientServiceImpl implements ClientService{
 		Client clientObject = new Client();
 		Address address = new Address();
 		Contact contact = new Contact();
+		System.out.println("documentId-----"+client.get("docId"));
 		String companyTypeId =  client.get("companyType").toString();
 		CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
 		ReflectionBeanUtil.mapClassFields(client, address);	
 		ReflectionBeanUtil.mapClassFields(client, contact);
-		ReflectionBeanUtil.mapClassFields(client, companyType);
+		//ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
+		System.out.println("*" +clientObject.getDocId());
 		clientObject.setAddress(address);
+		clientObject.setEnabled(1);
 		clientObject.setContact(contact);
 		clientObject.setCompanytype(companyType);
-		String enabled = client.get("enabled").toString();
-		boolean isEnabled = Boolean.parseBoolean(enabled);
-		if(isEnabled) {
-			clientObject.setEnabled(isEnabled);
+		String exemptable = client.get("exemptable").toString();
+		boolean isExemptable = Boolean.parseBoolean(exemptable);
+		if(isExemptable) {
+			clientObject.setExemptable(isExemptable);
 		}else {
-		clientObject.setEnabled(false);
+		clientObject.setExemptable(false);
 		}
 		List<Tax> taxArrayList = new ArrayList<>();
-		client.get("tax");
 		List<String> taxList = (List<String>)client.get("tax");
 		Client saveClient = clientRepository.save(clientObject);
 		for(int i=0;i<taxList.size();i++) {
@@ -81,22 +82,54 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public Client update(Client client, long id) {
+	public Client update(Map<String, Object>client, long id) {
 		Client clientObj = clientRepository.findById(id).get();
 		if(clientObj!=null) {
+			Address address=clientObj.getAddress();
+			Contact contact=clientObj.getContact();
+			String companyTypeId =  client.get("companyType").toString();
+			CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
+			ReflectionBeanUtil.mapClassFields(client, address);	
+			ReflectionBeanUtil.mapClassFields(client, contact);
+			ReflectionBeanUtil.mapClassFields(client, companyType);
+			ReflectionBeanUtil.mapClassFields(client, clientObj);
+			clientObj.setAddress(address);
+			clientObj.setContact(contact);
+			clientObj.setCompanytype(companyType);
+			String enabled = client.get("enabled").toString();
 			
-		}
-		return null;
+			List<Tax> taxArrayList = new ArrayList<>();
+			List<Tax> taxList = taxRepository.findByClient(clientObj);
+			//List<String> taxList = (List<String>)client.get("tax");
+			System.out.println(taxList);
+			for(Tax tax :taxList) {
+				tax.setName(taxList.get(0).getName());
+				taxArrayList.add(tax);	
+				taxRepository.save(tax);
+				
+			} 
+		
+		
+	}
+		return clientRepository.save(clientObj);
 	}
 
 	@Override
 	public void delete(long id) {
-		clientRepository.deleteById(id);
+		Client client = clientRepository.findById(id).get();
+		client.setEnabled(0);
+		clientRepository.save(client);
 	}
 
 	@Override
 	public Client getById(long id) {
-		return clientRepository.findById(id).get();
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Client> getByEnabled() {
+		return clientRepository.findByEnabled();
 	}
 	
 }

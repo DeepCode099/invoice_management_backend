@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,21 +34,35 @@ public class Client {
 	private String primaryBussiness;
 	private long taxDocNo1;
 	private long taxDocNo2;
-	private String taxes;
-	private boolean enabled;
+	private long docId;
+	private int enabled;
+	private boolean exemptable;
+	public int getEnabled() {
+		return enabled;
+	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.PERSIST })
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean isExemptable() {
+		return exemptable;
+	}
+
+	public void setExemptable(boolean exemptable) {
+		this.exemptable = exemptable;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "addressId")
 	private Address address;
 	@ManyToOne()
 	private CompanyType companytype;
-
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "contactId")
 	private Contact contact;
 	@JsonIgnore
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Tax> tax;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -58,151 +71,154 @@ public class Client {
 	private Date updateOn;
 	private String createdby;
 	private String updatedBy;
+	
 
-	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.PERSIST, CascadeType.REFRESH })
-	@JsonIgnore
-	private List<PurchaseOrder> purchaseOrders;
+	public Date getCreateOn() {
+		return createOn;
+	}
+
+	public void setCreateOn(Date createOn) {
+		this.createOn = createOn;
+	}
+
+	public Date getUpdateOn() {
+		return updateOn;
+	}
+
+	public void setUpdateOn(Date updateOn) {
+		this.updateOn = updateOn;
+	}
+
+	public String getCreatedby() {
+		return createdby;
+	}
+
+	public void setCreatedby(String createdby) {
+		this.createdby = createdby;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+
 	
 	@PrePersist
 	protected void prePersist() {
 		if (this.createOn == null)
 			createOn = new Date();
+
 	}
+
 	@PreUpdate
 	protected void preUpdate() {
 		this.updateOn = new Date();
 	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getBussinessName() {
-		return bussinessName;
-	}
-	public void setBussinessName(String bussinessName) {
-		this.bussinessName = bussinessName;
-	}
-	public String getPrimaryBussiness() {
-		return primaryBussiness;
-	}
-	public void setPrimaryBussiness(String primaryBussiness) {
-		this.primaryBussiness = primaryBussiness;
-	}
-	public long getTaxDocNo1() {
-		return taxDocNo1;
-	}
-	public void setTaxDocNo1(long taxDocNo1) {
-		this.taxDocNo1 = taxDocNo1;
-	}
-	public long getTaxDocNo2() {
-		return taxDocNo2;
-	}
-	public void setTaxDocNo2(long taxDocNo2) {
-		this.taxDocNo2 = taxDocNo2;
-	}
-	public String getTaxes() {
-		return taxes;
-	}
-	public void setTaxes(String taxes) {
-		this.taxes = taxes;
-	}
-	public boolean isEnabled() {
-		return enabled;
-	}
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	public CompanyType getCompanytype() {
-		return companytype;
-	}
-	public void setCompanytype(CompanyType companytype) {
-		this.companytype = companytype;
-	}
-	public Contact getContact() {
-		return contact;
-	}
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
 	public List<Tax> getTax() {
 		return tax;
 	}
+
 	public void setTax(List<Tax> tax) {
 		this.tax = tax;
 	}
-	public Date getCreateOn() {
-		return createOn;
+
+	public long getId() {
+		return id;
 	}
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
+
+	public void setId(long id) {
+		this.id = id;
 	}
-	public Date getUpdateOn() {
-		return updateOn;
+
+	public String getName() {
+		return name;
 	}
-	public void setUpdateOn(Date updateOn) {
-		this.updateOn = updateOn;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getCreatedby() {
-		return createdby;
+
+	public Address getAddress() {
+		return address;
 	}
-	public void setCreatedby(String createdby) {
-		this.createdby = createdby;
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
-	public String getUpdatedBy() {
-		return updatedBy;
+
+	public String getBussinessName() {
+		return bussinessName;
 	}
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+
+	public void setBussinessName(String bussinessName) {
+		this.bussinessName = bussinessName;
 	}
-	public List<PurchaseOrder> getPurchaseOrders() {
-		return purchaseOrders;
+
+	public Contact getContact() {
+		return contact;
 	}
-	public void setPurchaseOrders(List<PurchaseOrder> purchaseOrders) {
-		this.purchaseOrders = purchaseOrders;
+
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
 	}
-	public Client(long id, String name, String bussinessName, String primaryBussiness, long taxDocNo1, long taxDocNo2,
-			String taxes, boolean enabled, Address address, CompanyType companytype, Contact contact, List<Tax> tax,
-			Date createOn, Date updateOn, String createdby, String updatedBy, List<PurchaseOrder> purchaseOrders) {
+
+	public CompanyType getCompanytype() {
+		return companytype;
+	}
+
+	public void setCompanytype(CompanyType companytype) {
+		this.companytype = companytype;
+	}
+
+	public String getPrimaryBussiness() {
+		return primaryBussiness;
+	}
+
+	public void setPrimaryBussiness(String primaryBussiness) {
+		this.primaryBussiness = primaryBussiness;
+	}
+
+	public long getTaxDocNo1() {
+		return taxDocNo1;
+	}
+
+	public void setTaxDocNo1(long taxDocNo1) {
+		this.taxDocNo1 = taxDocNo1;
+	}
+
+	public long getDocId() {
+		return docId;
+	}
+
+	public void setDocId(long docId) {
+		this.docId = docId;
+	}
+
+	public long getTaxDocNo2() {
+		return taxDocNo2;
+	}
+
+	public void setTaxDocNo2(long taxDocNo2) {
+		this.taxDocNo2 = taxDocNo2;
+	}
+	
+	public Client(long id, String name, Address address) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.bussinessName = bussinessName;
-		this.primaryBussiness = primaryBussiness;
-		this.taxDocNo1 = taxDocNo1;
-		this.taxDocNo2 = taxDocNo2;
-		this.taxes = taxes;
-		this.enabled = enabled;
-		this.address = address;
-		this.companytype = companytype;
-		this.contact = contact;
-		this.tax = tax;
-		this.createOn = createOn;
-		this.updateOn = updateOn;
-		this.createdby = createdby;
-		this.updatedBy = updatedBy;
-		this.purchaseOrders = purchaseOrders;
 	}
+	
+
 	public Client() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
+
 }
+
+

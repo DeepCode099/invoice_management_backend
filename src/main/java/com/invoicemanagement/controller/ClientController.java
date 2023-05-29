@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicemanagement.model.AddressType;
 import com.invoicemanagement.model.Client;
 import com.invoicemanagement.service.ClientService;
 
@@ -32,9 +34,18 @@ public class ClientController {
 		return new ResponseEntity<Client>(clientService.add(client), HttpStatus.CREATED);
 		
 	}
+
+	/*
+	 * @GetMapping public List<Client>getAll(){ return clientService.getAll(); }
+	 */
 	@GetMapping
-	public List<Client>getAll(){
-		return clientService.getAll();
+	public List<Client>getByEnabled(){
+		return clientService.getByEnabled();
+	}
+	@GetMapping("{id}")
+	public ResponseEntity<Client> getById(@PathVariable ("id") long id){
+		return new ResponseEntity<Client>(clientService.getById(id), HttpStatus.OK);
+		
 	}
 	
 	@DeleteMapping
@@ -43,9 +54,10 @@ public class ClientController {
 		return new ResponseEntity<String>("deleted successfully!.", HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}")
-	public ResponseEntity<Client> getById(@PathVariable("id") long id){
-		return new ResponseEntity<Client>(clientService.getById(id),HttpStatus.OK);
+	@PutMapping("{id}")
+	public ResponseEntity<Client> update(@RequestBody Map<String, Object>client, @PathVariable long id) throws ClassNotFoundException{
+		System.out.println("test");
+		return new ResponseEntity<Client>(clientService.update(client, id), HttpStatus.CREATED);
 		
 	}
 	
