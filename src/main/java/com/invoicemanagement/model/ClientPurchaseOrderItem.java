@@ -22,6 +22,7 @@ public class ClientPurchaseOrderItem {
 	private float price;
 	private int qty;
 	@ManyToOne()
+	@JoinColumn(name ="purchaseOderId")
 	private PurchaseOrder purchaseOrder;
 
 

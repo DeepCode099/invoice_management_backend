@@ -70,6 +70,10 @@ public class PurchaseOrder {
 	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "clientId")
+	private Client client;
+	
 
 	public int getId() {
 		return id;
@@ -277,5 +281,14 @@ public class PurchaseOrder {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
 
 }

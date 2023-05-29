@@ -36,6 +36,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
 	@Autowired
 	private BillingTypeRepository billingTypeRepository;
+	
+	@Autowired
+	private ClientRepository clientRepository;
 
 	@Autowired
 	private ClientPurchaseOrderItemRepository clientPurchaseOrderItemRepository;
@@ -48,9 +51,16 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		BillingType billingType = billingTypeRepository.findById(Long.parseLong(billingTypeId)).get();
 		String billingCycleId = purchaseOrder.get("billingCycleName").toString();
 		BillingCycle billingCycle = billingCycleRepository.findById(Long.parseLong(billingCycleId)).get();
+		String clientId = purchaseOrder.get("client").toString();
+		
+    	System.out.println("clinet Id --->"+clientId);
+		
+		Client client = clientRepository.findById(Long.parseLong(clientId)).get();
+	    System.out.println("Client object in impl "+client.getName());
+		purchaseOrderObject.setClient(client);
 		purchaseOrderObject.setBillingCycle(billingCycle);
 		purchaseOrderObject.setBillingType(billingType);
-		purchaseOrder.get("clientPurchaseOrderItem");
+	//	purchaseOrder.get("clientPurchaseOrderItem");
 		String sow = purchaseOrder.get("sow").toString();
 		boolean isSow = Boolean.parseBoolean(sow);
 		System.out.println(isSow);
@@ -61,9 +71,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		}
 		System.out.println(purchaseOrder.get("clientPurchaseOrderItem"));
 		List<ClientPurchaseOrderItem> clientpol = new ArrayList<>();
-		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder
-				.get("clientPurchaseOrderItem");
-		System.out.println(clientPurchaseOrderItemList.size());
+		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>)purchaseOrder.get("clientPurchaseOrderItem");
+		//System.out.println(clientPurchaseOrderItemList.size());
 		PurchaseOrder savePO = purchaseOrderRepository.save(purchaseOrderObject);
 		for (int i = 0; i < clientPurchaseOrderItemList.size(); i++) {
 			Map<String, String> items = clientPurchaseOrderItemList.get(i);

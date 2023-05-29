@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -60,9 +61,9 @@ public class Invoice {
 	@JsonIgnore
 	private List<InvoiceItem> invoiceItems;
 	
-	@Column(name ="clientId")
-	private long clientId;
-	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "clientId" )
+	private Client client;
 
 	@ManyToOne
 	@JoinColumn(name = "purchaseOrderId")
@@ -164,15 +165,14 @@ public class Invoice {
 		this.invoiceItems = invoiceItems;
 	}
 
-	public long getClientId() {
-		return clientId;
+		public Client getClient() {
+		return client;
 	}
 
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
-	
 		public PurchaseOrder getPurchaseOrder() {
 		return purchaseOrder;
 	}
