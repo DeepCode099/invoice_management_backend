@@ -11,4 +11,5 @@ public interface ClientService {
 	public Client update(Client client, long id);
 	public void delete(long id); 
 
+	public Client getById(long id);
 }

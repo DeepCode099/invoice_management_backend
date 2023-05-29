@@ -54,9 +54,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public Invoice getById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Invoice getById(int id) {
+	 return invoiceRepository.findById(id).get();
 	}
 
 	@Override
