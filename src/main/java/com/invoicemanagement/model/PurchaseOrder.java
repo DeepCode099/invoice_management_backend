@@ -32,7 +32,7 @@ public class PurchaseOrder {
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date deliveryDate;
-	private boolean enabled;
+	private int enabled;
 	private float grandTotal;
 	private String instructions;
 	private float otherAmount;
@@ -74,6 +74,7 @@ public class PurchaseOrder {
 	@JoinColumn(name = "clientId")
 	private Client client;
 	
+	private long docId;
 
 	public int getId() {
 		return id;
@@ -123,11 +124,13 @@ public class PurchaseOrder {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public boolean isEnabled() {
+	
+
+	public int getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(int enabled) {
 		this.enabled = enabled;
 	}
 
@@ -288,6 +291,14 @@ public class PurchaseOrder {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public long getDocId() {
+		return docId;
+	}
+
+	public void setDocId(long docId) {
+		this.docId = docId;
 	}
 	
 

@@ -57,6 +57,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		
 		Client client = clientRepository.findById(Long.parseLong(clientId)).get();
 	    System.out.println("Client object in impl "+client.getName());
+	    purchaseOrderObject.setEnabled(1);
 		purchaseOrderObject.setClient(client);
 		purchaseOrderObject.setBillingCycle(billingCycle);
 		purchaseOrderObject.setBillingType(billingType);
@@ -92,16 +93,21 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
 	@Override
 	public List<PurchaseOrder> getAll() {
-		return purchaseOrderRepository.findAll();
+		return purchaseOrderRepository.getAllByEnabled();
 	}
 
 	@Override
 	public void delete(int id) {
-		// check whether a user exist or not
-		purchaseOrderRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder", "Id", id));
-		purchaseOrderRepository.deleteById(id);
-	}
+		
+		PurchaseOrder purcahseOrder = purchaseOrderRepository.findById(id).get();
+		purcahseOrder.setEnabled(0);
+		
+		purchaseOrderRepository.save(purcahseOrder);
+		/*
+		 * // check whether a user exist or not purchaseOrderRepository.findById(id)
+		 * .orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder", "Id", id));
+		 * purchaseOrderRepository.deleteById(id);
+		 */	}
 
 	@Override
 	public PurchaseOrder getById(int id) {

@@ -69,6 +69,18 @@ public class Invoice {
 	@JoinColumn(name = "purchaseOrderId")
 	private PurchaseOrder purchaseOrder;
 
+	private int enabled;
+	
+	
+	
+	public int getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
 	public int getId() {
 		return id;
 	}

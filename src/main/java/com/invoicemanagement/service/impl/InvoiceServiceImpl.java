@@ -38,13 +38,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public List<Invoice> getAll() {
-		return invoiceRepository.findAll();
+		return invoiceRepository.getAllByEnabled();
 	}
 
 	@Override
-	public void delete(long id) {
-		// TODO Auto-generated method stub
-
+	public void delete(int id) {
+	Invoice invoice =	invoiceRepository.findById(id).get();
+	System.out.println("delete invoice");
+	invoice.setEnabled(0);
+	invoiceRepository.save(invoice);
 	}
 
 	@Override
@@ -69,6 +71,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Client client = clientRepository.findById(Long.parseLong(clientId)).get();	
 		System.out.println("client object --"+client.toString());
 		ReflectionBeanUtil.mapClassFields(invoice, invoiceObject);
+		invoiceObject.setEnabled(1);
 		invoiceObject.setPurchaseOrder(purchaseOrder);
 		invoiceObject.setClient(client);
 		System.out.println("keyset -->" + invoice.keySet());
