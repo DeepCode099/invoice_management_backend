@@ -22,8 +22,8 @@ import com.invoicemanagement.service.ClientService;
 import com.invoicemanagement.util.ReflectionBeanUtil;
 
 @Service
-public class ClientServiceImpl implements ClientService{
-	
+public class ClientServiceImpl implements ClientService {
+
 	@Autowired
 	private ClientRepository clientRepository;
 	@Autowired
@@ -36,43 +36,50 @@ public class ClientServiceImpl implements ClientService{
 	private CompanyTypeRepository companyTypeRepository;
 	@Autowired
 	private TaxRepository taxRepository;
-	
+
 	@Override
-	public Client add(Map<String, Object> client) throws ClassNotFoundException{
+	public Client add(Map<String, Object> client) throws ClassNotFoundException {
 		Client clientObject = new Client();
 		Address address = new Address();
 		Contact contact = new Contact();
-		System.out.println("documentId-----"+client.get("docId"));
-		String companyTypeId =  client.get("companyType").toString();
+		String companyTypeId = client.get("companyType").toString();
 		CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
-		ReflectionBeanUtil.mapClassFields(client, address);	
+		ReflectionBeanUtil.mapClassFields(client, address);
 		ReflectionBeanUtil.mapClassFields(client, contact);
-		//ReflectionBeanUtil.mapClassFields(client, companyType);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
-		System.out.println("*" +clientObject.getDocId());
 		clientObject.setAddress(address);
 		clientObject.setEnabled(1);
 		clientObject.setContact(contact);
 		clientObject.setCompanytype(companyType);
 		String exemptable = client.get("exemptable").toString();
 		boolean isExemptable = Boolean.parseBoolean(exemptable);
-		if(isExemptable) {
+		if (isExemptable) {
 			clientObject.setExemptable(isExemptable);
-		}else {
-		clientObject.setExemptable(false);
+		} else {
+			clientObject.setExemptable(false);
 		}
 		List<Tax> taxArrayList = new ArrayList<>();
-		List<String> taxList = (List<String>)client.get("tax");
+		String taxData = client.get("tax").toString();
 		Client saveClient = clientRepository.save(clientObject);
-		for(int i=0;i<taxList.size();i++) {
-		String taxName = taxList.get(i);
-			Tax tax =new Tax();
-			tax.setName(taxName);
+		if(taxData.substring(0, 1)=="[") {
+			taxData = taxData.substring(1, taxData.length() - 1);
+			System.out.println("taxDataSplit---" +taxData);
+			String[] elements = taxData.split(", ");
+			System.out.println("elements------"+elements);
+			for (String taxElement : elements){
+				Tax tax = new Tax();
+				tax.setName(taxElement);
+				tax.setClient(saveClient);
+				taxRepository.save(tax);
+				}
+		}else {
+			Tax tax = new Tax();
+			tax.setName(taxData);
 			tax.setClient(saveClient);
-			taxArrayList.add(tax);	
+			taxArrayList.add(tax);
 			taxRepository.save(tax);
-			
-		} 
+		}
+		
 		return saveClient;
 	}
 
@@ -82,38 +89,60 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public Client update(Map<String, Object>client, long id) {
+	public Client update(Map<String, Object> client, long id) {
 		Client clientObj = clientRepository.findById(id).get();
-		if(clientObj!=null) {
-			Address address=clientObj.getAddress();
-			Contact contact=clientObj.getContact();
-			String companyTypeId =  client.get("companyType").toString();
-			CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
-			ReflectionBeanUtil.mapClassFields(client, address);	
-			ReflectionBeanUtil.mapClassFields(client, contact);
-			ReflectionBeanUtil.mapClassFields(client, companyType);
+		if (clientObj != null) {
+			Address address = clientObj.getAddress();
+			if(address !=null) {
+				System.out.println("ad"+address.getId());
+				ReflectionBeanUtil.mapClassFields(client, address);
+				clientObj.setAddress(address);
+			}
+			Contact contact = clientObj.getContact();
+			if(contact !=null) {
+				ReflectionBeanUtil.mapClassFields(client, contact);
+				clientObj.setContact(contact);
+			}
+			CompanyType company =clientObj.getCompanytype();
+			if(company !=null) {
+				String companyTypeId = client.get("companyType").toString();
+				CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
+				clientObj.setCompanytype(companyType);
+			}
 			ReflectionBeanUtil.mapClassFields(client, clientObj);
-			clientObj.setAddress(address);
-			clientObj.setContact(contact);
-			clientObj.setCompanytype(companyType);
-			String enabled = client.get("enabled").toString();
-			
 			List<Tax> taxArrayList = new ArrayList<>();
 			List<Tax> taxList = taxRepository.findByClient(clientObj);
-			//List<String> taxList = (List<String>)client.get("tax");
-			System.out.println(taxList);
-			for(Tax tax :taxList) {
-				tax.setName(taxList.get(0).getName());
-				taxArrayList.add(tax);	
-				taxRepository.save(tax);
+			for(Tax tax:taxList) {
+			
+			String taxData = client.get("tax").toString();
+			Client saveClient = clientRepository.save(clientObj);
+			
+			if(taxData.substring(0, 1)=="[") {
+				taxData = taxData.substring(1, taxData.length() - 1);
 				
-			} 
-		
-		
+				String[] elements = taxData.split(", ");
+			
+				System.out.println("length"+elements.length);
+					for (String taxElement : elements){
+						System.out.println("length"+elements.length);
+						tax.setName(taxElement);
+						tax.setClient(saveClient);
+						taxRepository.save(tax);
+						}
+					}else {
+				
+				tax.setName(taxData);
+				tax.setClient(saveClient);
+				taxArrayList.add(tax);
+				taxRepository.save(tax);
+				break;
+			}
+		}
 	}
 		return clientRepository.save(clientObj);
 	}
 
+	
 	@Override
 	public void delete(long id) {
 		Client client = clientRepository.findById(id).get();
@@ -123,13 +152,14 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public Client getById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Client client = clientRepository.findById(id).get();
+		return client;
 	}
 
 	@Override
 	public List<Client> getByEnabled() {
 		return clientRepository.findByEnabled();
 	}
-	
+
+
 }

@@ -62,7 +62,7 @@ public class Client {
 	@JoinColumn(name = "contactId")
 	private Contact contact;
 	@JsonIgnore
-	@OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
 	private List<Tax> tax;
 	
 	@Temporal(TemporalType.TIMESTAMP)
