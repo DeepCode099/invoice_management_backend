@@ -31,21 +31,4 @@ public class AddressController {
 	public List<Address> getAll() {
 		return addressService.getAll(); 
 		}
-	/*
-	 * 
-	 * 
-	 * @GetMapping("{id}") public ResponseEntity<AddressType> getById(@PathVariable
-	 * ("id") long id){ return new
-	 * ResponseEntity<AddressType>(addressTypService.getById(id), HttpStatus.OK);
-	 * 
-	 * }
-	 * 
-	 * @PutMapping("{id}") public ResponseEntity<AddressType>update(@PathVariable
-	 * ("id") long id ,@RequestBody AddressType addressType){ return new
-	 * ResponseEntity<AddressType>(addressTypService.update(addressType, id),
-	 * HttpStatus.OK); }
-	 * 
-	 * @DeleteMapping() public ResponseEntity<String> delete(@RequestParam ("id")
-	 * long id){ addressTypService.delete(id); return new
-	 * ResponseEntity<String>("deleted successfully!.", HttpStatus.OK); }
-	 */}
+	}

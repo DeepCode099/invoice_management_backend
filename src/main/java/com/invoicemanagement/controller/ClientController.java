@@ -34,10 +34,6 @@ public class ClientController {
 		return new ResponseEntity<Client>(clientService.add(client), HttpStatus.CREATED);
 		
 	}
-
-	/*
-	 * @GetMapping public List<Client>getAll(){ return clientService.getAll(); }
-	 */
 	@GetMapping
 	public List<Client>getByEnabled(){
 		return clientService.getByEnabled();

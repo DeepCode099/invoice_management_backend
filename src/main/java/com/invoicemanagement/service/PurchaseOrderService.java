@@ -13,5 +13,6 @@ public interface PurchaseOrderService {
 	public List<PurchaseOrder> getAll();
 	public void delete(int id); 
 	public PurchaseOrder getById(int id);
-
+	public PurchaseOrder update(Map<String, Object>map, int id);
+	
 }
