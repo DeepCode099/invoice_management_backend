@@ -71,8 +71,17 @@ public class Invoice {
 
 	private int enabled;
 	
+	private String comments;
 	
 	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
 	public int getEnabled() {
 		return enabled;
 	}

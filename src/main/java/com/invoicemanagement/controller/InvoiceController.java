@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicemanagement.model.Invoice;
+import com.invoicemanagement.model.PaymentMode;
 import com.invoicemanagement.model.PurchaseOrder;
 import com.invoicemanagement.service.InvoiceService;
 
@@ -53,6 +55,10 @@ public class InvoiceController {
 		
 	}
 	
+	@PutMapping("{id}")
+	public ResponseEntity<Invoice> update(@RequestBody Map<String,Object> invoice , @PathVariable("id") int id){
+		return new ResponseEntity<Invoice>(invoiceService.update(invoice, id),HttpStatus.OK);
+	}
 	
 	
 	

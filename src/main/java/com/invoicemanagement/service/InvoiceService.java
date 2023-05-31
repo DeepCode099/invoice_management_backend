@@ -12,4 +12,6 @@ public interface InvoiceService {
 	public void delete(int id); 
 	public Invoice update(Invoice invoice, long id);
 	public Invoice getById(int id);
+	
+	public Invoice update(Map<String,Object> invoice,int id );
 }

@@ -97,4 +97,33 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	}
 
+	@Override
+	public Invoice update(Map<String, Object> invoice, int id) {
+		// TODO Auto-generated method stub
+	  Invoice invoiceObject = invoiceRepository.findById(id).get();
+	  String clientId = invoice.get("name").toString();
+	  Client client = clientRepository.findById(Long.parseLong(clientId)).get();
+	  invoiceObject.setClient(client);
+	  String purchaserOrderId = invoice.get("poNumber").toString();
+	  PurchaseOrder  purchaseOrder = purchaseOrderRepository.findById(Integer.parseInt(purchaserOrderId)).get();
+	  invoiceObject.setPurchaseOrder(purchaseOrder);
+	  ReflectionBeanUtil.mapClassFields(invoice, invoiceObject);
+	  List<InvoiceItem> invoiceItemList = new ArrayList<>();
+	  List<Map<String, String>> invoiceItems = (List<Map<String, String>>) invoice.get("invoiceItems");
+	  Invoice updateInvoice = invoiceRepository.save(invoiceObject);
+	  for (int i = 0; i < invoiceItems.size(); i++) {
+			Map<String, String> items = invoiceItems.get(i);
+			InvoiceItem invoiceItem = new InvoiceItem();
+			invoiceItem.setQuantity(Integer.parseInt(items.get("qty").toString()));
+			invoiceItem.setAmount(Double.parseDouble(items.get("amount").toString()));
+			invoiceItem.setDescrition(items.get("description"));
+			invoiceItem.setPart(Double.parseDouble(items.get("part")));
+			invoiceItem.setInvoice(updateInvoice);
+			invoiceItemList.add(invoiceItem);
+			invoiceItemRepository.save(invoiceItem);
+		}
+		invoiceObject.setInvoiceItems(invoiceItemList);
+		return updateInvoice;
+	}
+
 }
