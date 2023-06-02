@@ -49,7 +49,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		String clientId = purchaseOrder.get("client").toString();
 		Client client = clientRepository.findById(Long.parseLong(clientId)).get();
 		System.out.println("Client object in impl " + client.getName());
-		purchaseOrderObject.setEnabled(1);
 		purchaseOrderObject.setClient(client);
 		purchaseOrderObject.setBillingCycle(billingCycle);
 		purchaseOrderObject.setBillingType(billingType);
@@ -62,8 +61,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 			purchaseOrderObject.setSow(false);
 		}
 		List<ClientPurchaseOrderItem> clientpol = new ArrayList<>();
-		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder
-				.get("clientPurchaseOrderItem");
+		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder.get("clientPurchaseOrderItem");
 
 		PurchaseOrder savePO = purchaseOrderRepository.save(purchaseOrderObject);
 		for (int i = 0; i < clientPurchaseOrderItemList.size(); i++) {
@@ -90,8 +88,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	@Override
 	public void delete(int id) {
 		PurchaseOrder purcahseOrder = purchaseOrderRepository.findById(id).get();
-		purcahseOrder.setEnabled(0);
+		if(purcahseOrder !=null) {
+		purcahseOrder.setEnabled(1);
 		purchaseOrderRepository.save(purcahseOrder);
+		}
 	}
 
 	@Override

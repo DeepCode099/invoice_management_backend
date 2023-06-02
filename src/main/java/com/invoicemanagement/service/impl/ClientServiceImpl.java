@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.Address;
+import com.invoicemanagement.model.AddressType;
 import com.invoicemanagement.model.Client;
 import com.invoicemanagement.model.CompanyType;
 import com.invoicemanagement.model.Contact;
@@ -42,13 +43,15 @@ public class ClientServiceImpl implements ClientService {
 		Client clientObject = new Client();
 		Address address = new Address();
 		Contact contact = new Contact();
+		String addressType = client.get("addressType").toString();
+		AddressType addressType2 = addressTypeRepository.findById(Long.parseLong(addressType)).get();
 		String companyTypeId = client.get("companyType").toString();
 		CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
 		ReflectionBeanUtil.mapClassFields(client, address);
 		ReflectionBeanUtil.mapClassFields(client, contact);
 		ReflectionBeanUtil.mapClassFields(client, clientObject);
+		address.setAddressType(addressType2);
 		clientObject.setAddress(address);
-		clientObject.setEnabled(1);
 		clientObject.setContact(contact);
 		clientObject.setCompanytype(companyType);
 		String exemptable = client.get("exemptable").toString();
@@ -61,31 +64,24 @@ public class ClientServiceImpl implements ClientService {
 		List<Tax> taxArrayList = new ArrayList<>();
 		String taxData = client.get("tax").toString();
 		Client saveClient = clientRepository.save(clientObject);
-		if(taxData.substring(0, 1)=="[") {
+		if (taxData.substring(0, 1) == "[") {
 			taxData = taxData.substring(1, taxData.length() - 1);
-			System.out.println("taxDataSplit---" +taxData);
 			String[] elements = taxData.split(", ");
-			System.out.println("elements------"+elements);
-			for (String taxElement : elements){
+			for (String taxElement : elements) {
 				Tax tax = new Tax();
 				tax.setName(taxElement);
 				tax.setClient(saveClient);
 				taxRepository.save(tax);
-				}
-		}else {
+			}
+		} else {
 			Tax tax = new Tax();
 			tax.setName(taxData);
 			tax.setClient(saveClient);
 			taxArrayList.add(tax);
 			taxRepository.save(tax);
 		}
-		
-		return saveClient;
-	}
 
-	@Override
-	public List<Client> getAll() {
-		return clientRepository.findAll();
+		return saveClient;
 	}
 
 	@Override
@@ -93,18 +89,18 @@ public class ClientServiceImpl implements ClientService {
 		Client clientObj = clientRepository.findById(id).get();
 		if (clientObj != null) {
 			Address address = clientObj.getAddress();
-			if(address !=null) {
-				System.out.println("ad"+address.getId());
+			if (address != null) {
+				System.out.println("ad" + address.getId());
 				ReflectionBeanUtil.mapClassFields(client, address);
 				clientObj.setAddress(address);
 			}
 			Contact contact = clientObj.getContact();
-			if(contact !=null) {
+			if (contact != null) {
 				ReflectionBeanUtil.mapClassFields(client, contact);
 				clientObj.setContact(contact);
 			}
-			CompanyType company =clientObj.getCompanytype();
-			if(company !=null) {
+			CompanyType company = clientObj.getCompanytype();
+			if (company != null) {
 				String companyTypeId = client.get("companyType").toString();
 				CompanyType companyType = companyTypeRepository.findById(Long.parseLong(companyTypeId)).get();
 				clientObj.setCompanytype(companyType);
@@ -112,41 +108,40 @@ public class ClientServiceImpl implements ClientService {
 			ReflectionBeanUtil.mapClassFields(client, clientObj);
 			List<Tax> taxArrayList = new ArrayList<>();
 			List<Tax> taxList = taxRepository.findByClient(clientObj);
-			for(Tax tax:taxList) {
-			
-			String taxData = client.get("tax").toString();
-			Client saveClient = clientRepository.save(clientObj);
-			
-			if(taxData.substring(0, 1)=="[") {
-				taxData = taxData.substring(1, taxData.length() - 1);
-				
-				String[] elements = taxData.split(", ");
-			
-				System.out.println("length"+elements.length);
-					for (String taxElement : elements){
-						System.out.println("length"+elements.length);
+			for (Tax tax : taxList) {
+
+				String taxData = client.get("tax").toString();
+				Client saveClient = clientRepository.save(clientObj);
+
+				if (taxData.substring(0, 1) == "[") {
+					taxData = taxData.substring(1, taxData.length() - 1);
+
+					String[] elements = taxData.split(", ");
+
+					System.out.println("length" + elements.length);
+					for (String taxElement : elements) {
+						System.out.println("length" + elements.length);
 						tax.setName(taxElement);
 						tax.setClient(saveClient);
 						taxRepository.save(tax);
-						}
-					}else {
-				
-				tax.setName(taxData);
-				tax.setClient(saveClient);
-				taxArrayList.add(tax);
-				taxRepository.save(tax);
-				break;
+					}
+				} else {
+
+					tax.setName(taxData);
+					tax.setClient(saveClient);
+					taxArrayList.add(tax);
+					taxRepository.save(tax);
+					break;
+				}
 			}
 		}
-	}
 		return clientRepository.save(clientObj);
 	}
 
-	
 	@Override
 	public void delete(long id) {
 		Client client = clientRepository.findById(id).get();
-		client.setEnabled(0);
+		client.setEnabled(1);
 		clientRepository.save(client);
 	}
 
@@ -157,9 +152,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Client> getByEnabled() {
+	public List<Client> getAll() {
 		return clientRepository.findByEnabled();
 	}
-
 
 }

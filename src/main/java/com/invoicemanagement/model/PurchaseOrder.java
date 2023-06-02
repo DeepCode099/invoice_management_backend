@@ -24,30 +24,21 @@ public class PurchaseOrder {
 	private int id;
 	private float advancePaid;
 	private float balanceDue;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date createdDate;
 	private long currencyId;
-	/*
-	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 */
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date deliveryDate;
 	private int enabled;
 	private float grandTotal;
 	private String instructions;
 	private float otherAmount;
-	/*
-	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 * 
-	 */
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date poDate;
 	private String poFileUrl;
 	private String poNumber;
-	/*
-	 * @DateTimeFormat(pattern = "yyyy-MM-dd")
-	 */
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date receivedDate;
 	private float subTotal;
 	private float taxAmount;
@@ -57,19 +48,15 @@ public class PurchaseOrder {
 	private String hsnSac;
 	private String billingAddress;
 	private String shippingAddress;
-
 	@ManyToOne
 	@JoinColumn(name = "billingCycleId")
 	private BillingCycle billingCycle;
-
 	@ManyToOne
 	@JoinColumn(name = "billingTypeId")
 	private BillingType billingType;
 	@OneToMany(mappedBy = "purchaseOrder")
 	@JsonIgnore
 	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
-
-	
 	@ManyToOne
 	@JoinColumn(name = "clientId")
 	private Client client;
@@ -280,10 +267,6 @@ public class PurchaseOrder {
 		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
 	}
 
-	public PurchaseOrder() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public Client getClient() {
 		return client;
@@ -299,6 +282,11 @@ public class PurchaseOrder {
 
 	public void setDocId(long docId) {
 		this.docId = docId;
+	}
+
+	public PurchaseOrder() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 

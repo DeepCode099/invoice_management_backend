@@ -6,19 +6,20 @@ import org.springframework.stereotype.Service;
 
 import com.invoicemanagement.model.Address;
 import com.invoicemanagement.model.AddressType;
+import com.invoicemanagement.model.Client;
 import com.invoicemanagement.repository.AddressTypeRepository;
 import com.invoicemanagement.service.AddressTypeService;
 
 @Service
-public class AddressTypeServiceImpl implements AddressTypeService{
+public class AddressTypeServiceImpl implements AddressTypeService {
 
 	private AddressTypeRepository addressTypeRepository;
-	
+
 	public AddressTypeServiceImpl(AddressTypeRepository addressTypeRepository) {
 		super();
 		this.addressTypeRepository = addressTypeRepository;
 	}
-	
+
 	@Override
 	public AddressType create(AddressType addressType) {
 		return addressTypeRepository.save(addressType);
@@ -26,8 +27,9 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 
 	@Override
 	public List<AddressType> getAll() {
-	return addressTypeRepository.findAll();
+		return addressTypeRepository.findAll();
 	}
+
 	@Override
 	public AddressType getById(long id) {
 		return addressTypeRepository.findById(id).get();
@@ -36,7 +38,7 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 	@Override
 	public AddressType update(AddressType addressType, long id) {
 		AddressType addresstype = addressTypeRepository.findById(id).get();
-		if(addresstype!=null) {
+		if (addresstype != null) {
 			addresstype.setAname(addressType.getAname());
 		}
 		return addressTypeRepository.save(addresstype);
@@ -44,8 +46,16 @@ public class AddressTypeServiceImpl implements AddressTypeService{
 
 	@Override
 	public void delete(long id) {
-	addressTypeRepository.deleteById(id);
-		
+		AddressType addressType = addressTypeRepository.findById(id).get();
+		if (addressType != null) {
+			addressType.setEnabled(1);
+			addressTypeRepository.save(addressType);
+		}
+	}
+
+	@Override
+	public List<AddressType> findByEnabled() {
+		return addressTypeRepository.findByEnabled();
 	}
 
 }

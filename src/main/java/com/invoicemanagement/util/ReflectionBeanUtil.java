@@ -4,12 +4,11 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ReflectionBeanUtil {
-
 	public static void mapClassFields(Map<String, Object> map, Object entity) {
-
 		for (Field field : entity.getClass().getDeclaredFields()) {
 			field.setAccessible(true);
 			String fieldType = field.getType().getSimpleName();
@@ -17,12 +16,13 @@ public class ReflectionBeanUtil {
 				if (field.getName() != "id" && map.get(field.getName()) != null) {
 					String a = "";
 					if (fieldType.equals("long")) {
-					
+						
 						if (map.get(field.getName()).toString() != "") {
 							a = map.get(field.getName()).toString();
 						} else {
 							a = "0";
 						}
+						
 						field.set(entity, Long.parseLong(a));
 					} else if (fieldType.equals("int")) {
 						if (map.get(field.getName()).toString() != "") {
@@ -72,5 +72,28 @@ public class ReflectionBeanUtil {
 			}
 		}
 
+	}
+	
+	
+	public static  void map(Object dto, Object entity) {
+		Map<String, Object>map = new HashMap<String, Object>();
+		for (Field field : entity.getClass().getDeclaredFields()) {
+			for(Field field1 : dto.getClass().getDeclaredFields()) {
+				if(field.getName().equalsIgnoreCase(field1.getName())) {
+					try {
+						field.set(entity, map.get(field1.getName()));
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				
+			}
+			
+			
+		}	
+		
 	}
 }

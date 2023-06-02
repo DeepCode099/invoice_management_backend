@@ -34,8 +34,8 @@ private AddressTypeService addressTypService;
 		return new ResponseEntity<AddressType>(addressTypService.create(addressType), HttpStatus.CREATED);
 	}
 	@GetMapping
-	public List<AddressType> getAll() {
-		return addressTypService.getAll();
+	public List<AddressType> getByEnabled() {
+		return addressTypService.findByEnabled();
 	}
 	@GetMapping("{id}")
 	public ResponseEntity<AddressType> getById(@PathVariable ("id") long id){

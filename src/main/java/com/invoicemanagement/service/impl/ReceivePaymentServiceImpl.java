@@ -41,8 +41,6 @@ public class ReceivePaymentServiceImpl implements ReceivePaymentService {
 		String paymentModeId = receivePayment.get("name").toString();
 		PaymentMode paymentMode = paymentModeRepository.findById(Long.parseLong(paymentModeId)).get();
 		ReflectionBeanUtil.mapClassFields(receivePayment, receivePaymentObject);
-		System.out.println("keys -->" + receivePayment.keySet());
-		// ReflectionBeanUtil.mapClassFields(receivePayment, client);
 		receivePaymentObject.setClient(client);
 		receivePaymentObject.setInvoice(invoice);
 		receivePaymentObject.setPaymentMode(paymentMode);

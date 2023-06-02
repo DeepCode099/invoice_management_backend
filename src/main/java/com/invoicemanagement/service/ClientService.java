@@ -10,7 +10,6 @@ public interface ClientService {
 	public List<Client> getAll();
 	public Client getById (long id);
 	public Client update(Map<String, Object>client,long id);
-	public List<Client> getByEnabled ();
 	public void delete(long id); 
 
 }

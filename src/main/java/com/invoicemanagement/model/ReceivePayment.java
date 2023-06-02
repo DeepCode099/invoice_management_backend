@@ -47,7 +47,7 @@ public class ReceivePayment {
 	@Column(name = "amountPaid")
 	private String amountPaid;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	@Column(name = "dateOfPayment")
 	private Date dateOfPayment;
 	

@@ -36,7 +36,7 @@ public class ClientController {
 	}
 	@GetMapping
 	public List<Client>getByEnabled(){
-		return clientService.getByEnabled();
+		return clientService.getAll();
 	}
 	@GetMapping("{id}")
 	public ResponseEntity<Client> getById(@PathVariable ("id") long id){

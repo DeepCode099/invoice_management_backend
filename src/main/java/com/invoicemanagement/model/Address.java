@@ -42,7 +42,6 @@ public class Address {
 	private Date updateOn;
 	private String createdby;
 	private String updatedBy;
-
 	@PrePersist
 	protected void prePersist() {
 		if (this.createOn == null)
@@ -54,12 +53,10 @@ public class Address {
 	protected void preUpdate() {
 		this.updateOn = new Date();
 	}
-	
-	/*
-	 * @OneToOne()
-	 * 
-	 * @JoinColumn(name = "addresstypeid") private AddressType addressType;
-	 */
+
+	@OneToOne
+	@JoinColumn(name = "addresstypeid")
+	private AddressType addressType;
 
 	public Date getCreateOn() {
 		return createOn;
@@ -97,12 +94,13 @@ public class Address {
 //	@NotBlank(message = "Please select country")
 	private String country;
 
-	/*
-	 * public AddressType getAddressType() { return addressType; }
-	 * 
-	 * public void setAddressType(AddressType addressType) { this.addressType =
-	 * addressType; }
-	 */
+	public AddressType getAddressType() {
+		return addressType;
+	}
+
+	public void setAddressType(AddressType addressType) {
+		this.addressType = addressType;
+	}
 
 	public int getId() {
 		return id;
@@ -192,12 +190,6 @@ public class Address {
 		this.website = website;
 	}
 
-	/*
-	 * public AddressType getAddressType() { return addressType; }
-	 * 
-	 * public void setAddressType(AddressType addressType) { this.addressType =
-	 * addressType; }
-	 */
 
 	public String getCountry() {
 		return country;

@@ -16,6 +16,7 @@ public class AddressType{
 	@Column(name ="addressTypeId")
 	private long id;
 	private String aname;
+	private int enabled;
 	public long getId() {
 		return id;
 	}
@@ -29,9 +30,15 @@ public class AddressType{
 	public void setAname(String aname) {
 		this.aname = aname;
 	}
+	
+	public int getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
 	public AddressType() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 }

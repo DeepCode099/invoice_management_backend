@@ -10,7 +10,7 @@ import com.invoicemanagement.model.Client;
 
 public interface ClientRepository extends JpaRepository<Client, Long>{
 	
-	@Query(value = "SELECT * FROM client where enabled=1", nativeQuery = true)
+	@Query(value = "SELECT * FROM client where enabled=0", nativeQuery = true)
 	public List<Client> findByEnabled();
 		
 }

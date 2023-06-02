@@ -3,6 +3,7 @@ package com.invoicemanagement.model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -37,6 +38,24 @@ public class Client {
 	private long docId;
 	private int enabled;
 	private boolean exemptable;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "addressId")
+	private Address address;
+	@ManyToOne
+	private CompanyType companytype;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "contactId")
+	private Contact contact;
+	@JsonIgnore
+	@OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
+	private List<Tax> tax;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
+	private Date createOn;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
+	private Date updateOn;
+	private String createdby;
+	private String updatedBy;
+	
 	public int getEnabled() {
 		return enabled;
 	}
@@ -52,27 +71,6 @@ public class Client {
 	public void setExemptable(boolean exemptable) {
 		this.exemptable = exemptable;
 	}
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "addressId")
-	private Address address;
-	@ManyToOne()
-	private CompanyType companytype;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "contactId")
-	private Contact contact;
-	@JsonIgnore
-	@OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
-	private List<Tax> tax;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createOn;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateOn;
-	private String createdby;
-	private String updatedBy;
-	
-
 	public Date getCreateOn() {
 		return createOn;
 	}

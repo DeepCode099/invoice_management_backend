@@ -11,5 +11,6 @@ public interface AddressTypeService {
 	public AddressType getById(long id);
 	public AddressType update(AddressType addressType, long id);
 	public void delete(long id); 
+	public List<AddressType> findByEnabled();
 	
 }
