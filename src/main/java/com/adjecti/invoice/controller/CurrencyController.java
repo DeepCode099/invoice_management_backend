@@ -50,6 +50,7 @@ private CurrencyService currencyService;
 
 	@GetMapping("{id}")
 	public ResponseEntity<Currency> getById(@PathVariable("id") long id){
+		System.out.println(id+"aa");
 		return new ResponseEntity<Currency>(currencyService.getById(id),HttpStatus.OK);
 	}
 	

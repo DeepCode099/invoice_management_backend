@@ -7,9 +7,8 @@ import com.adjecti.invoice.model.BillingType;
 import com.adjecti.invoice.model.PurchaseOrder;
 
 public interface PurchaseOrderService {
-
-    public PurchaseOrder createPurchaseOrder(Map<String, Object> purchaseOrder) throws ClassNotFoundException;
-
+    
+    public PurchaseOrder add(PurchaseOrder purchaseOrder);
 	public List<PurchaseOrder> getAll();
 	public void delete(int id); 
 	public PurchaseOrder getById(int id);

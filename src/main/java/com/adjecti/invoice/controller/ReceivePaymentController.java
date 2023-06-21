@@ -22,22 +22,16 @@ import com.adjecti.invoice.service.ReceivePaymentService;
 @RestController
 @RequestMapping("/api/v1/receivePayment")
 public class ReceivePaymentController {
-
 	
 	@Autowired
     private ReceivePaymentService receivePaymentService;
-	
-	@PostMapping
-	public ResponseEntity<ReceivePayment> createReceivePayment(@RequestBody Map<String, Object> receivePayment)
-			throws ClassNotFoundException {
-		System.out.println("Object -->"+receivePayment);
-		return new ResponseEntity<ReceivePayment>(receivePaymentService.create(receivePayment),
-				HttpStatus.CREATED);
-	} 
-	
+
 	@GetMapping
 	public List<ReceivePayment> getAllPurchaseOrder() {
 		return receivePaymentService.getAll();
 	}
-
+	@PostMapping
+	public ResponseEntity<ReceivePayment> add(@RequestBody ReceivePayment receivePayment){
+		return new ResponseEntity<ReceivePayment>(receivePaymentService.add(receivePayment), HttpStatus.CREATED);
+	}
 }

@@ -32,24 +32,13 @@ public class ReceivePaymentServiceImpl implements ReceivePaymentService {
 	private ClientRepository clientRepository;
 
 	@Override
-	public ReceivePayment create(Map<String, Object> receivePayment) throws ClassNotFoundException {
-		ReceivePayment receivePaymentObject = new ReceivePayment();
-		String clientId = receivePayment.get("client").toString();
-		Client client = clientRepository.findById(Long.parseLong(clientId)).get();
-		String invoiceId = receivePayment.get("invoiceNo").toString();
-		Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceId)).get();
-		String paymentModeId = receivePayment.get("name").toString();
-		PaymentMode paymentMode = paymentModeRepository.findById(Long.parseLong(paymentModeId)).get();
-		ReflectionBeanUtil.mapClassFields(receivePayment, receivePaymentObject);
-		receivePaymentObject.setClient(client);
-		receivePaymentObject.setInvoice(invoice);
-		receivePaymentObject.setPaymentMode(paymentMode);
-		return receivePaymentRepository.save(receivePaymentObject);
+	public List<ReceivePayment> getAll() {
+		return receivePaymentRepository.findAll();
 	}
 
 	@Override
-	public List<ReceivePayment> getAll() {
-		return receivePaymentRepository.findAll();
+	public ReceivePayment add(ReceivePayment receivePayment) {
+		return receivePaymentRepository.save(receivePayment);
 	}
 
 }

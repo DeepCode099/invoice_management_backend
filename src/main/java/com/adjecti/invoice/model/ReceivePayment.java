@@ -24,10 +24,11 @@ public class ReceivePayment {
 	private int id;
 	
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "clientId")
 	private Client client;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "invoiceId")
 	private Invoice invoice;
 	

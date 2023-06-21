@@ -30,12 +30,21 @@ public class InvoiceController {
 	@Autowired
     private InvoiceService invoiceService;
 	
+	
 	@PostMapping
-	public ResponseEntity<Invoice> createInvoice(@RequestBody Map<String, Object> invoice) throws ClassNotFoundException{
-		System.out.println("test");
-		return new ResponseEntity<Invoice>(invoiceService.create(invoice), HttpStatus.CREATED);
-		
+	public ResponseEntity<Invoice> add(@RequestBody Invoice invoice){
+		System.out.println("test invoice -->");
+		return new ResponseEntity<Invoice>(invoiceService.add(invoice),HttpStatus.CREATED);
 	}
+	
+	/*
+	 * @PostMapping public ResponseEntity<Invoice> createInvoice(@RequestBody
+	 * Map<String, Object> invoice) throws ClassNotFoundException{
+	 * System.out.println("test"); return new
+	 * ResponseEntity<Invoice>(invoiceService.create(invoice), HttpStatus.CREATED);
+	 * 
+	 * }
+	 */
 	
 	@GetMapping
 	public List<Invoice> getAllInvoice() {

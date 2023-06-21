@@ -39,48 +39,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	private ClientPurchaseOrderItemRepository clientPurchaseOrderItemRepository;
 
 	@Override
-	public PurchaseOrder createPurchaseOrder(Map<String, Object> purchaseOrder) throws ClassNotFoundException {
-		PurchaseOrder purchaseOrderObject = new PurchaseOrder();
-		String billingTypeId = purchaseOrder.get("billingTypeName").toString();
-		ReflectionBeanUtil.mapClassFields(purchaseOrder, purchaseOrderObject);
-		BillingType billingType = billingTypeRepository.findById(Long.parseLong(billingTypeId)).get();
-		String billingCycleId = purchaseOrder.get("billingCycleName").toString();
-		BillingCycle billingCycle = billingCycleRepository.findById(Long.parseLong(billingCycleId)).get();
-		String clientId = purchaseOrder.get("client").toString();
-		Client client = clientRepository.findById(Long.parseLong(clientId)).get();
-		System.out.println("Client object in impl " + client.getName());
-		purchaseOrderObject.setClient(client);
-		purchaseOrderObject.setBillingCycle(billingCycle);
-		purchaseOrderObject.setBillingType(billingType);
-		String sow = purchaseOrder.get("sow").toString();
-		boolean isSow = Boolean.parseBoolean(sow);
-		System.out.println(isSow);
-		if (isSow) {
-			purchaseOrderObject.setSow(isSow);
-		} else {
-			purchaseOrderObject.setSow(false);
-		}
-		List<ClientPurchaseOrderItem> clientpol = new ArrayList<>();
-		List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder.get("clientPurchaseOrderItem");
-
-		PurchaseOrder savePO = purchaseOrderRepository.save(purchaseOrderObject);
-		for (int i = 0; i < clientPurchaseOrderItemList.size(); i++) {
-			Map<String, String> items = clientPurchaseOrderItemList.get(i);
-			ClientPurchaseOrderItem clientPurchaseOrderItem = new ClientPurchaseOrderItem();
-			clientPurchaseOrderItem.setItemName(items.get("itemName"));
-			clientPurchaseOrderItem.setItemDescription((items.get("itemDescription")));
-			clientPurchaseOrderItem.setQty(Integer.parseInt(items.get("qty").toString()));
-			clientPurchaseOrderItem.setPrice(Float.parseFloat(items.get("price").toString()));
-			clientPurchaseOrderItem.setAmount(Float.parseFloat(items.get("amount").toString()));
-			clientPurchaseOrderItem.setPurchaseOrder(savePO);
-			clientpol.add(clientPurchaseOrderItem);
-			clientPurchaseOrderItemRepository.save(clientPurchaseOrderItem);
-		}
-		purchaseOrderObject.setClientPurchaseOrderItem(clientpol);
-		return savePO;
-	}
-
-	@Override
 	public List<PurchaseOrder> getAll() {
 		return purchaseOrderRepository.getAllByEnabled();
 	}
@@ -88,16 +46,15 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 	@Override
 	public void delete(int id) {
 		PurchaseOrder purcahseOrder = purchaseOrderRepository.findById(id).get();
-		if(purcahseOrder !=null) {
-		purcahseOrder.setEnabled(1);
-		purchaseOrderRepository.save(purcahseOrder);
+		if (purcahseOrder != null) {
+			purcahseOrder.setEnabled(1);
+			purchaseOrderRepository.save(purcahseOrder);
 		}
 	}
 
 	@Override
 	public PurchaseOrder getById(int id) {
 		PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id).get();
-		System.out.println(" __________________________________ "+purchaseOrder.getClient().getName());
 		return purchaseOrderRepository.findById(id).get();
 	}
 
@@ -138,7 +95,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 			} else {
 				purchaseOrderObj.setSow(false);
 			}
-			List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder.get("clientPurchaseOrderItem");
+			List<Map<String, String>> clientPurchaseOrderItemList = (List<Map<String, String>>) purchaseOrder
+					.get("clientPurchaseOrderItem");
 			List<ClientPurchaseOrderItem> clientPurchaseOrderItem2 = purchaseOrderObj.getClientPurchaseOrderItem();
 			purchaseOrderObj = purchaseOrderRepository.save(purchaseOrderObj);
 			for (int i = 0; i < clientPurchaseOrderItemList.size(); i++) {
@@ -157,5 +115,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 		}
 		purchaseOrderObj.setClientPurchaseOrderItem(clientpol);
 		return purchaseOrderObj;
+	}
+
+	@Override
+	public PurchaseOrder add(PurchaseOrder purchaseOrder) {
+		return purchaseOrderRepository.save(purchaseOrder);
 	}
 }

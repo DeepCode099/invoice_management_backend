@@ -1,6 +1,5 @@
 package com.adjecti.invoice.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.adjecti.invoice.model.BillingCycle;
-import com.adjecti.invoice.model.ClientPurchaseOrderItem;
 import com.adjecti.invoice.model.PurchaseOrder;
 import com.adjecti.invoice.service.PurchaseOrderService;
 
@@ -26,13 +23,13 @@ import com.adjecti.invoice.service.PurchaseOrderService;
 @RestController
 @RequestMapping("/api/v1/purchaseOrder")
 public class PurchaseOrderController {
+	
 	@Autowired
     private PurchaseOrderService purchaseOrderService;
+	
 	@PostMapping
-	public ResponseEntity<PurchaseOrder> createPurchaseOrder(@RequestBody HashMap<String, Object> purchaseOrder)
-			throws ClassNotFoundException {
-		System.out.println("Object -->"+purchaseOrder);
-		return new ResponseEntity<PurchaseOrder>(purchaseOrderService.createPurchaseOrder(purchaseOrder),
+	public ResponseEntity<PurchaseOrder> add(@RequestBody PurchaseOrder purchaserOrder){
+		return new ResponseEntity<PurchaseOrder>(purchaseOrderService.add(purchaserOrder),
 				HttpStatus.CREATED);
 	} 
 	@GetMapping
@@ -53,7 +50,5 @@ public class PurchaseOrderController {
 		return new ResponseEntity<PurchaseOrder> (purchaseOrderService.update(purchaseOrder, id), HttpStatus.OK);
 		
 	}
-	
-	
 	
 }

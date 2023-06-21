@@ -9,7 +9,6 @@ import com.adjecti.invoice.model.Invoice;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
 
-	
 	@Query(value = "Select * from tbl_invoice where enabled=0",nativeQuery = true)
 	public List<Invoice> getAllByEnabled();
 }

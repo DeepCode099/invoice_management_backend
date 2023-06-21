@@ -27,7 +27,6 @@ public class PurchaseOrder {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date createdDate;
 	private long currencyId;
-	
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date deliveryDate;
 	private int enabled;
@@ -43,7 +42,7 @@ public class PurchaseOrder {
 	private float subTotal;
 	private float taxAmount;
 	private String termsConditions;
-	 private boolean sow;
+	private boolean sow;
 	private String title;
 	private String hsnSac;
 	private String billingAddress;
@@ -55,13 +54,13 @@ public class PurchaseOrder {
 	@JoinColumn(name = "billingTypeId")
 	private BillingType billingType;
 	@OneToMany(mappedBy = "purchaseOrder")
-	@JsonIgnore
+    @JsonIgnore
 	private List<ClientPurchaseOrderItem> clientPurchaseOrderItem;
 	@ManyToOne
 	@JoinColumn(name = "clientId")
 	private Client client;
 	
-	private long docId;
+	private long docId;	
 
 	public int getId() {
 		return id;
@@ -110,8 +109,6 @@ public class PurchaseOrder {
 	public void setDeliveryDate(Date deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
-
-	
 
 	public int getEnabled() {
 		return enabled;
@@ -267,7 +264,6 @@ public class PurchaseOrder {
 		this.clientPurchaseOrderItem = clientPurchaseOrderItem;
 	}
 
-
 	public Client getClient() {
 		return client;
 	}
@@ -284,10 +280,6 @@ public class PurchaseOrder {
 		this.docId = docId;
 	}
 
-	public PurchaseOrder() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 
 }
